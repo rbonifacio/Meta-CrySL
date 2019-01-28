@@ -5,13 +5,14 @@ public data Literal
   | stringLiteral(str strValue)
   ;
 
-public data Spec = spec(str typeName, 
+public data Spec = spec(bool abstract, 
+                        str name, 
                         ObjectClause objectClause, 
                         EventClause eventClause, 
                         EventOrder eventOrder, 
                         ConstraintClause constraintClause, 
                         RequireClause requireClause, 
-                        EnsureClause ensureClauseDef);
+                        EnsureClause ensureClause);
    
 public data ObjectClause = objectClause(list[ObjectDecl] objectDecls); 
    
@@ -44,9 +45,9 @@ public data Method = method(str name, list[Argument] formalArgs);
 public data Argument = wildcard() 
                      | concreteParameter(str parameterName); 
 
-public data RequireClause = requireClause(list[Predicate] requires); 
+public data RequireClause = requireClause(list[Predicate] predicates); 
 
-public data EnsureClause = ensureClause(list[Predicate] ensures); 
+public data EnsureClause = ensureClause(list[Predicate] predicates); 
 
 public data Predicate = predicate(str pred, list[str] objects, list[str] event); 
 

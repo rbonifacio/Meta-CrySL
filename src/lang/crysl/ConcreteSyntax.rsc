@@ -20,7 +20,7 @@ lexical QualifiedType
 
 /* The start symbol SpecDef */ 
 start syntax SpecDef 
-  = spec: "SPEC" Id  ObjectClauseDef EventClauseDef EventOrderDef ConstraintClauseDef RequireClauseDef EnsureClauseDef ;
+  = spec: "abstract"? "SPEC" Id  ObjectClauseDef EventClauseDef EventOrderDef ConstraintClauseDef RequireClauseDef EnsureClauseDef ;
 
 /* Definitions for the object declaration section */ 
 
