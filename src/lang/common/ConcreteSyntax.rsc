@@ -21,7 +21,6 @@ syntax LiteralSetDef = literalSet: "{" {LiteralDef ","}+ "}"
                      | metaVariable: "${" Id "}"
                      ; 
 
-
 lexical Comment =
   "/**/" 
   | "//" EOLCommentChars !>> ![\n \a0D] LineTerminator 
