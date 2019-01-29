@@ -15,7 +15,7 @@ public data Spec = spec(bool abstract,
    
 public data ObjectClause = objectClause(list[ObjectDecl] objectDecls); 
    
-public data ObjectDecl = objectDecl(str qualifiedType, str varName); 
+public data ObjectDecl = objectDecl(str qualifiedType, bool arr, str varName); 
 
 public data EventClause = eventClause(list[EventDecl] eventDecls); 
 

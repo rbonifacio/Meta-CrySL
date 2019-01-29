@@ -30,8 +30,8 @@ str defineVar = "define x = {1, 2, 3};";
 
 // some string objects to help testing the configuration parser 
 
-str loadSpecification = "load spec \"Cipher\";" ; 
-str loadRefinement = "load refinement \"BCCipher\";"; 
+str loadSpecification = "load spec Cipher;" ; 
+str loadRefinement = "load refinement BCCipher;"; 
 
 test bool parseSpecClause() {
 	str spec = "abstract SPEC foo" + "\n " + objects + "\n " + events + "\n " + order + "\n " + constraints + "\n " + requires + "\n " + ensures ; 
@@ -123,7 +123,7 @@ test bool parseDefineVar() {
 // Test Cases for parsing Configuration Modules 
 
 test bool parseConfigurationDef() {
-	str configurationDef = "config BCProvider { src = \"foo\"; out = \"bar\";" + loadSpecification + "\n" + loadRefinement + "\n" + "}" ; 
+	str configurationDef = "config BCProvider { src = /foo/test; out = /bar;" + loadSpecification + "\n" + loadRefinement + "\n" + "}" ; 
 	parseTree = parse(#ConfigurationDef, configurationDef);
 	absTree = implode(#Configuration, parseTree); 
 	

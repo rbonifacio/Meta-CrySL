@@ -8,12 +8,15 @@ lexical String
   = "\"" ![\"]*  "\"" ;
 
 lexical Id 
-  = ([a-zA-Z0-9] !<< [a-zA-Z] [a-zA-Z0-9]* !>> [a-zA-Z0-9]) \ Keyword
+  = ([a-zA-Z0-9] !<< [a-zA-Z] [a-zA-Z0-9_]* !>> [a-zA-Z0-9_]) \ Keyword
   ;
     
 lexical QualifiedType 
   = {Id "."}+ ; 
 
+lexical Path 
+  = [a-zA-Z0-9/\-]*;
+  
 syntax LiteralDef 
   = intLiteral: Natural | stringLiteral: String ; 
 

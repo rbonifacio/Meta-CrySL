@@ -17,7 +17,7 @@ syntax ObjectClauseDef
   = objectClause: "OBJECTS" ObjectDef+; 
   
 syntax ObjectDef 
-  = objectDecl: QualifiedType Id ";" ; 
+  = objectDecl: QualifiedType ("[" "]")? Id ";" ; 
 
 /* Definitions for the event declaration section */ 
   
