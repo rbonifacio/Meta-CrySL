@@ -4,19 +4,8 @@
  */
 module lang::crysl::ConcreteSyntax
 
-/* some lexical definitions */ 
-lexical Natural 
-  = [0-9]+ ;              
+import lang::common::ConcreteSyntax;
 
-lexical String 
-  = "\"" ![\"]*  "\"" ;
-
-lexical Id 
-  = ([a-zA-Z0-9] !<< [a-zA-Z] [a-zA-Z0-9]* !>> [a-zA-Z0-9]) \ Keyword
-  ;
-    
-lexical QualifiedType 
-  = {Id "."}+ ; 
 
 /* The start symbol SpecDef */ 
 start syntax SpecDef 
@@ -86,33 +75,9 @@ syntax EnsureClauseDef
 
 syntax PredicateDef 
   = predicate: Id "[" {Id ","}+"]" ("after" Id)?  ";" ; 
-
-syntax LiteralDef 
-  = intLiteral: Natural | stringLiteral: String ; 
-
-syntax LiteralSetDef = literalSet: "{" {LiteralDef ","}+ "}" ; 
-
+                     
 keyword Keyword 
   = "SPEC" | "OBJECTS" | "EVENTS" | "ORDER" 
   | "CONSTRAINTS" | "ENSURES" | "after" 
   | "CONFIG"  ;
 
-lexical Comment =
-  "/**/" 
-  | "//" EOLCommentChars !>> ![\n \a0D] LineTerminator 
-  | "/*" !>> [*] CommentPart* "*/" 
-  | "/**" !>> [/] CommentPart* "*/" 
-  ;
-  
-lexical LAYOUT =
-  [\t-\n\ ] 
-  | Comment 
-  ;  
-  
-layout LAYOUTLIST  =
-  LAYOUT* !>> [\t-\n \a0C-\a0D \ ] !>> (  [/]  [*]  ) !>> (  [/]  [/]  ) !>> "/*" !>> "//"
-  ;
-
-lexical BlockCommentChars =
-  ![* \\]+ 
-  ;  

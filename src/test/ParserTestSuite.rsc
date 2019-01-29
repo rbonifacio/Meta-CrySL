@@ -1,10 +1,19 @@
-module lang::crysl::\test::ParserTestSuite
+module \test::ParserTestSuite
 
 import IO; 
 import ParseTree; 
 
+import lang::common::ConcreteSyntax;
+import lang::common::AbstractSyntax; 
+
 import lang::crysl::AbstractSyntax; 
 import lang::crysl::ConcreteSyntax; 
+
+
+import lang::refinement::AbstractSyntax; 
+import lang::refinement::ConcreteSyntax; 
+
+// some string objects to help testing the CrySL parser
 
 str objects     = "OBJECTS \n br.foo f; br.foo g;"; 
 str events      = "EVENTS g1: abc(); g2: abcde(); g := g1 | g2;";
@@ -12,6 +21,10 @@ str order       = "ORDER g1 | g2";
 str constraints = "CONSTRAINTS x in {1,2,3}; y in {4,5,6}; x in {4,5} =\> z in {10};";
 str requires    = "REQUIRES pred[b] after a;";
 str ensures     = "ENSURES pred[a] after b;";
+
+// some string objects to help testing the refinement parser 
+
+str defineVar = "define x = {1, 2, 3};";
 
 test bool parseSpecClause() {
 	str spec = "abstract SPEC foo" + "\n " + objects + "\n " + events + "\n " + order + "\n " + constraints + "\n " + requires + "\n " + ensures ; 
@@ -73,11 +86,29 @@ test bool parseConstraintClauseDef() {
 }
 
 test bool parseEnsureClauseDef() {
-		try {
+	try {
 		parse(#EnsureClauseDef, ensures);
 		return true; 
 	}
 	catch : {
 		return false; 
 	}
+}
+
+// Test Cases for parsing Refinment Modules 
+test bool parseRefinementDef() {
+	str refinementDef = "SPEC foo refines bar { " + defineVar + " }" ; 
+	parseTree = parse(#RefinementDef, refinementDef);
+	refinement = implode(#Refinement, parseTree); 
+	
+	assert refinement.refinementName == "foo"; 
+	assert refinement.baseSpec == "bar"; 
+	assert size(refinement.refinements) == 1; 
+	
+	return true; 
+}
+
+test bool parseDefineVar() {
+	parse(#RefinementElementDef, defineVar); 
+	return true;
 }

@@ -1,9 +1,8 @@
 module lang::crysl::AbstractSyntax
 
-public data Literal 
-  = intLiteral(int intValue)
-  | stringLiteral(str strValue)
-  ;
+
+import lang::common::AbstractSyntax; 
+
 
 public data Spec = spec(bool abstract, 
                         str name, 
@@ -51,4 +50,3 @@ public data EnsureClause = ensureClause(list[Predicate] predicates);
 
 public data Predicate = predicate(str pred, list[str] objects, list[str] event); 
 
-public data LiteralSet = literalSet(set[Literal] values);
