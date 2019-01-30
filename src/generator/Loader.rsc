@@ -5,10 +5,13 @@ import ParseTree;
 
 import Map; 
 
+import lang::configuration::AbstractSyntax; 
+
 import lang::crysl::AbstractSyntax; 
 import lang::crysl::Parser; 
+
 import lang::refinement::AbstractSyntax; 
-import lang::configuration::AbstractSyntax; 
+import lang::refinement::Parser; 
 
 public map[str, Spec] specifications = (); 
 public map[str, Refinement] refinements = (); 
@@ -29,6 +32,11 @@ public void parseModule(str src, LoadModule l) {
  			s = parseSpecification(location);
  			specifications += (s.name : s);
 		}
-		case loadRefinement(refinement): println(refinement);	
+		case loadRefinement(refinement): { 
+			fullPath += src + "/" + specification + ".ref";
+			location = |file:///| + fullPath; 
+ 			r = parseSpecification(location);
+ 			specifications += (r.name : r);
+		}	
 	};
 }
