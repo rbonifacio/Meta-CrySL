@@ -10,13 +10,11 @@ import lang::crysl::Parser;
 import lang::refinement::AbstractSyntax; 
 import lang::configuration::AbstractSyntax; 
 
-public map[str, Spec] specifications; 
-public map[str, Refinement] refinements; 
+public map[str, Spec] specifications = (); 
+public map[str, Refinement] refinements = (); 
 
 public void load(Configuration config) {
-    specification = (); 
-    refinements = ();
-	for(LoadModule l <- config.modules) {
+    for(LoadModule l <- config.modules) {
 		parseModule(config.src, l); 
 	};
 }

@@ -1,22 +1,21 @@
-SPEC java.security.MessageDigest
+SPEC MessageDigest
 OBJECTS
     java.lang.String digestAlg;
    
 	
 EVENTS
     g1: getInstance(digestAlg);
-    g2: getInstance(digestAlg, _);
     Gets := g1 | g2;
 
-   
-
 ORDER
-    Gets, (DWOU | (Updates+, Digests)), (r, (DWOU | (Updates+, Digests)))* 
+    Gets
 
 CONSTRAINTS
     digestAlg in {"SHA-256", "SHA-384", "SHA-512"};
     
-
+REQUIRES
+    foo[x]; 
+    
 ENSURES
 	digested[out];
-    digested[out, inbytearr];
+    digested[out];

@@ -32,7 +32,7 @@ lexical Comment =
   ;
   
 lexical LAYOUT =
-  [\t-\n\ ] 
+  [\t-\r\n\ ] 
   | Comment 
   ;  
   
