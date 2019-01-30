@@ -1,5 +1,6 @@
 module lang::crysl::AbstractSyntax
 
+import util::Maybe; 
 
 import lang::common::AbstractSyntax; 
 
@@ -10,7 +11,7 @@ public data Spec = spec(bool abstract,
                         EventClause eventClause, 
                         EventOrder eventOrder, 
                         ConstraintClause constraintClause, 
-                        RequireClause requireClause, 
+                        list[RequireClause] requireClause, 
                         EnsureClause ensureClause);
    
 public data ObjectClause = objectClause(list[ObjectDecl] objectDecls); 
@@ -37,8 +38,15 @@ public data ConstraintClause = constraintClause(list[Constraint] constraints);
 
 public data Constraint = inSetConstraint(str varName, LiteralSet values) 
                        | impliesConstraint(Constraint lhs, Constraint rhs)
+                       | ltConstraint(SimpleConstraint, SimpleConstraint)
+                       | gtConstraint(SimpleConstraint, SimpleConstraint) 
+                       | leqConstraint(SimpleConstraint, SimpleConstraint)
+                       | geqConstraint(SimpleConstraint, SimpleConstraint) 
                        ;
-                        
+
+public data SimpleConstraint = expNatural(int natValue)
+                             | expVar(str varName);
+                              
 public data Method = method(str name, list[Argument] formalArgs);
                         
 public data Argument = wildcard() 
@@ -48,5 +56,5 @@ public data RequireClause = requireClause(list[Predicate] predicates);
 
 public data EnsureClause = ensureClause(list[Predicate] predicates); 
 
-public data Predicate = predicate(str pred, list[str] objects, list[str] event); 
+public data Predicate = predicate(str pred, list[Argument] objects, list[str] event); 
 

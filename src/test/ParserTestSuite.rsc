@@ -17,10 +17,10 @@ import lang::configuration::ConcreteSyntax;
 
 // some string objects to help testing the CrySL parser
 
-str objects     = "OBJECTS \n br.foo f; br.foo g;"; 
-str events      = "EVENTS g1: abc(); g2: abcde(); g := g1 | g2;";
-str order       = "ORDER g1 | g2"; 
-str constraints = "CONSTRAINTS x in {1,2,3}; y in {4,5,6}; x in {4,5} =\> z in {10};";
+str objects     = "OBJECTS java.lang.String digestAlg; byte pre_inbyte; byte[] pre_inbytearr; int pre_off; int pre_len; java.nio.ByteBuffer pre_inpBuf; byte[] inbytearr;int off; int len; byte[] out;"; 
+str events      = "EVENTS g1: getInstance(digestAlg); g2: getInstance(digestAlg, _);Gets := g1 | g2;u1: update(pre_inbyte);";
+str order       = "ORDER Gets, (DWOU | (Updates+, Digests)), (r, (DWOU | (Updates+, Digests)))*"; 
+str constraints = "CONSTRAINTS digestAlg in {\"SHA-256\", \"SHA-384\", \"SHA-52\"}; x \< 10;";
 str requires    = "REQUIRES pred[b] after a;";
 str ensures     = "ENSURES pred[a] after b;";
 
@@ -34,18 +34,18 @@ str loadSpecification = "load spec Cipher;" ;
 str loadRefinement = "load refinement BCCipher;"; 
 
 test bool parseSpecClause() {
-	str spec = "abstract SPEC foo" + "\n " + objects + "\n " + events + "\n " + order + "\n " + constraints + "\n " + requires + "\n " + ensures ; 
+	str spec = "abstract SPEC java.security.MessageDigest" + "\n " + objects + "\n " + events + "\n " + order + "\n " + constraints + "\n " + requires + "\n " + ensures ; 
 		
 	parseTree = parse(#SpecDef, spec); 
 	absTree = implode(#Spec, parseTree);  
 	
 	assert absTree.abstract; 
-	assert absTree.name == "foo"; 
-	assert size(absTree.objectClause.objectDecls) == 2;
-	assert size(absTree.eventClause.eventDecls) == 3; 
-	assert absTree.eventOrder.exp == or(label("g1"), label("g2")); 
-	assert size(absTree.constraintClause.constraints) == 3;
-	assert size(absTree.requireClause.predicates) == 1;
+	assert absTree.name == "java.security.MessageDigest"; 
+	assert size(absTree.objectClause.objectDecls) == 10;
+	assert size(absTree.eventClause.eventDecls) == 4; 
+	//assert absTree.eventOrder.exp == or(label("g1"), label("g2")); 
+	assert size(absTree.constraintClause.constraints) == 2;
+	//assert size(absTree.requireClause.predicates) == 1;
 	assert size(absTree.ensureClause.predicates) == 1;
 	
 	return true; 

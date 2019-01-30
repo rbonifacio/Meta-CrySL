@@ -9,7 +9,7 @@ import lang::common::ConcreteSyntax;
 
 /* The start symbol SpecDef */ 
 start syntax SpecDef 
-  = spec: "abstract"? "SPEC" QualifiedType  ObjectClauseDef EventClauseDef EventOrderDef ConstraintClauseDef RequireClauseDef EnsureClauseDef ;
+  = spec: "abstract"? "SPEC" QualifiedType  ObjectClauseDef EventClauseDef EventOrderDef ConstraintClauseDef RequireClauseDef? EnsureClauseDef ;
 
 /* Definitions for the object declaration section */ 
 
@@ -60,7 +60,14 @@ syntax ConstraintClauseDef
 syntax ConstraintDef 
   = inSetConstraint: Id "in" LiteralSetDef 
   | left impliesConstraint: ConstraintDef "=\>" ConstraintDef 
+  > left ltConstraint: SimpleConstraintDef "\<" SimpleConstraintDef
+  | left gtConstraint: SimpleConstraintDef "\>" SimpleConstraintDef
+  | left leqConstraint: SimpleConstraintDef "\<=" SimpleConstraintDef
+  | left geqConstraint: SimpleConstraintDef "\>=" SimpleConstraintDef
   ; 
+  
+syntax SimpleConstraintDef = expNatural : Natural
+                           | expVar : Id;   
   
 /* Definitions for the require declaration section */ 
 
@@ -74,7 +81,7 @@ syntax EnsureClauseDef
   = ensureClause: "ENSURES" PredicateDef+; 
 
 syntax PredicateDef 
-  = predicate: Id "[" {Id ","}+"]" ("after" Id)?  ";" ; 
+  = predicate: Id "[" {ArgumentDef ","}+"]" ("after" Id)?  ";" ; 
                      
 keyword Keyword 
   = "SPEC" | "OBJECTS" | "EVENTS" | "ORDER" 
