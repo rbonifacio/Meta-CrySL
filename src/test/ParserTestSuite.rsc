@@ -20,7 +20,7 @@ import lang::configuration::ConcreteSyntax;
 str objects     = "OBJECTS java.lang.String digestAlg; byte pre_inbyte; byte[] pre_inbytearr; int pre_off; int pre_len; java.nio.ByteBuffer pre_inpBuf; byte[] inbytearr;int off; int len; byte[] out;"; 
 str events      = "EVENTS g1: getInstance(digestAlg); g2: getInstance(digestAlg, _);Gets := g1 | g2;u1: update(pre_inbyte);";
 str order       = "ORDER Gets, (DWOU | (Updates+, Digests)), (r, (DWOU | (Updates+, Digests)))*"; 
-str constraints = "CONSTRAINTS digestAlg in {\"SHA-256\", \"SHA-384\", \"SHA-52\"}; x \< 10;";
+str constraints = "CONSTRAINTS digestAlg in {\"SHA-256\", \"SHA-384\", \"SHA-52\"}; x \< 10; y in ${S};";
 str requires    = "REQUIRES pred[b] after a;";
 str ensures     = "ENSURES pred[a] after b;";
 
@@ -44,7 +44,7 @@ test bool parseSpecClause() {
 	assert size(absTree.objectClause.objectDecls) == 10;
 	assert size(absTree.eventClause.eventDecls) == 4; 
 	//assert absTree.eventOrder.exp == or(label("g1"), label("g2")); 
-	assert size(absTree.constraintClause.constraints) == 2;
+	assert size(absTree.constraintClause.constraints) == 3;
 	//assert size(absTree.requireClause.predicates) == 1;
 	assert size(absTree.ensureClause.predicates) == 1;
 	

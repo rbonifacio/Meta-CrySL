@@ -65,7 +65,8 @@ syntax ConstraintDef
   | left leqConstraint: SimpleConstraintDef "\<=" SimpleConstraintDef
   | left geqConstraint: SimpleConstraintDef "\>=" SimpleConstraintDef
   ; 
-  
+
+                     
 syntax SimpleConstraintDef = expNatural : Natural
                            | expVar : Id;   
   

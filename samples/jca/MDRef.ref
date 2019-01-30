@@ -1,5 +1,5 @@
 SPEC MDRef REFINES java.security.MessageDigest {
 
-	define digestAlgorithm = {"SHA-256"}; 
+	define Algorithm = {"SHA-256"}; 
 
 }

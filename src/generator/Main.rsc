@@ -11,5 +11,5 @@ import generator::Loader;
 
 void main(loc configurationFile) {
 	Configuration c = parseConfiguration(configurationFile); 
-	load(c); 
+	executeLoader(c); 
 }

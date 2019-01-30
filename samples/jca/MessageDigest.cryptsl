@@ -35,7 +35,7 @@ ORDER
     Gets, (DWOU | (Updates+, Digests)), (r, (DWOU | (Updates+, Digests)))* 
 
 CONSTRAINTS
-    digestAlg in {"SHA-256", "SHA-384", "SHA-512"};
+    digestAlg in ${Algorithm};
     pre_len > pre_off;
     len > off;
    

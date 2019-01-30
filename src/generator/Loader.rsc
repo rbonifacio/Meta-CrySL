@@ -13,30 +13,44 @@ import lang::crysl::Parser;
 import lang::refinement::AbstractSyntax; 
 import lang::refinement::Parser; 
 
+import generator::PreProcessor; 
+
 public map[str, Spec] specifications = (); 
 public map[str, Refinement] refinements = (); 
 
-public void load(Configuration config) {
+public void executeLoader(Configuration config) {
     for(LoadModule l <- config.modules) {
 		parseModule(config.src, l); 
 	};
+	
+	executePreProcessor(specifications, refinements);
 }
 
 
-public void parseModule(str src, LoadModule l) {
+public void parseModule(str src, LoadModule l, bool verbose = true) {
 	fullPath = "";
 	switch(l) {
-		case loadSpec(specification) : { 
-			fullPath += src + "/" + specification + ".cryptsl";
+		case loadSpec(specification) : {
+		    fullPath += src + "/" + specification + ".cryptsl";
+		    
+		    if(verbose) print("Loading file " + fullPath); 
+					    
 			location = |file:///| + fullPath; 
  			s = parseSpecification(location);
  			specifications += (s.name : s);
+ 			
+ 			if(verbose) println(" ok"); 
 		}
 		case loadRefinement(refinement): { 
-			fullPath += src + "/" + specification + ".ref";
+			fullPath += src + "/" + refinement + ".ref";
+			
+			if(verbose) print("Loading file " + fullPath); 
+						
 			location = |file:///| + fullPath; 
- 			r = parseSpecification(location);
- 			specifications += (r.name : r);
+ 			r = parseRefinement(location);
+ 			refinements += (r.name : r);
+ 			
+ 			if(verbose) println(" ok"); 
 		}	
 	};
 }

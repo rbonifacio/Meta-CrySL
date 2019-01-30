@@ -44,6 +44,7 @@ public data Constraint = inSetConstraint(str varName, LiteralSet values)
                        | geqConstraint(SimpleConstraint, SimpleConstraint) 
                        ;
 
+                     
 public data SimpleConstraint = expNatural(int natValue)
                              | expVar(str varName);
                               

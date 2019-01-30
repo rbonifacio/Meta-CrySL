@@ -17,6 +17,7 @@ lexical QualifiedType
 lexical Path 
   = [a-zA-Z0-9/\-]*;
   
+   
 syntax LiteralDef 
   = intLiteral: Natural | stringLiteral: String ; 
 
