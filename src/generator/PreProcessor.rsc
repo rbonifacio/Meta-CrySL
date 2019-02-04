@@ -9,25 +9,16 @@ import lang::refinement::AbstractSyntax;
 
 import generator::PrettyPrinter; 
 
-public void executePreProcessor(map[str, Spec] specifications, map[str, Refinement] refinements) {
-	for(key <- refinements) {
-	    r = refinements[key]; 
-		top-down visit(specifications[r.baseSpec])	{
-			case metaVariable(var) => bindVariable(r, var)  
-		};
-	};
+public list[Spec] executePreProcessor(map[str, Spec] specifications, map[str, Refinement] refinements) 
+  = [preProcess(r, s) | k <- refinements, r := refinements[k], s := specifications[r.baseSpec]]; 
 	
-	println("Starting the pretty printer"); 
-	
-	for(key <- specifications) {
-		s = specifications[key]; 
-		strSpec = prettyPrint(s);
-		println(strSpec);
-	}			
-}
+
+Spec preProcess(Refinement r, Spec s) = top-down visit(s)	{
+	case metaVariable(var) => bindVariable(r, var)  
+};
 
 LiteralSet bindVariable(Refinement r, str var) {
- return  switch([s | defineVar(v,s) <- r.refinements, v == var]) {
+  switch([s | defineVar(v,s) <- r.refinements, v == var]) {
      case [literalSet(x)] : return literalSet(x); 
      default  : throw  "invalid definition for variable " + var; 
   };

@@ -15,15 +15,15 @@ import lang::refinement::Parser;
 
 import generator::PreProcessor; 
 
-public map[str, Spec] specifications = (); 
-public map[str, Refinement] refinements = (); 
+private map[str, Spec] specifications = (); 
+private map[str, Refinement] refinements = (); 
 
-public void executeLoader(Configuration config) {
+public tuple[map[str, Spec], map[str, Refinement]] loadModules(Configuration config) {
     for(LoadModule l <- config.modules) {
 		parseModule(config.src, l); 
 	};
 	
-	executePreProcessor(specifications, refinements);
+	return <specifications, refinements>; 
 }
 
 
