@@ -1,0 +1,4 @@
+SPEC SecureRandom REFINES java.security.SecureRandom {
+	define algorithm = {"SHA1PRNG", "Windows-PRNG", "NativePRNG", "NativePRNGBlocking", "NativePRNGNonBlocking", "PKCS11"};
+	add event gI: getInstanceStrong();
+}

@@ -15,8 +15,8 @@ public list[Spec] executePreProcessor(map[str, Spec] specifications, map[str, Re
 
 Spec preProcess(Refinement r, Spec s) = top-down visit(s)	{
 	case constraintClause(cs) => updateConstraints(r, cs)
+	case eventClause(es) => updateEvents(r, es)  
 	case metaVariable(var) => bindVariable(r, var)
-	   
 };
 
 LiteralSet bindVariable(Refinement r, str var) {
@@ -26,7 +26,6 @@ LiteralSet bindVariable(Refinement r, str var) {
   };
 }
 
-ConstraintClause updateConstraints(Refinement r, list[Constraint] cs) {
-	cs = cs + [c | addConstraint(c) <- r.refinements]; 
-	return constraintClause(cs); 
-}
+EventClause updateEvents(Refinement r, list[EventDecl] es) = eventClause(es + [e | addEvent(e) <- r.refinements]); 
+
+ConstraintClause updateConstraints(Refinement r, list[Constraint] cs) = constraintClause(cs + [c | addConstraint(c) <- r.refinements]);
