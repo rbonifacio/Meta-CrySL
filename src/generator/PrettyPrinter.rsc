@@ -12,6 +12,8 @@ str prettyPrint(Spec spec) =
 '<ppEventClause(spec.eventClause.eventDecls)>
 '<ppEventOrder(spec.eventOrder)>
 '<ppConstraintClause(spec.constraintClause.constraints)>
+'<ppRequireClause(spec.requireClause)>
+'<ppEnsureClause(spec.ensureClause.predicates)>
 ";
 
 str ppObjectClause(list[ObjectDecl] os) = 
@@ -22,7 +24,7 @@ str ppObjectClause(list[ObjectDecl] os) =
 ";
 
 str ppObject(ObjectDecl obj)  {
-	if(obj.arr) return "<obj.qualifiedType>[] <obj.varName>"; 
+	if(obj.arr) return "<obj.qualifiedType>[] <obj.varName>;"; 
 	return "<obj.qualifiedType> <obj.varName>;"; 
 }
 
@@ -99,7 +101,7 @@ str ppConstraint(Constraint c) {
 
 str ppLiteralSet(LiteralSet s) {
 	switch(s) {
-		case literalSet(values) : return "{ <ppValues([v | v <- values])> }"; 
+		case literalSet(values) : return "{<ppValues([v | v <- values])>}"; 
 		case metaVariable(str varName): return "${varName}";
 	}
 }
@@ -114,4 +116,23 @@ str ppValues(list[Literal] values) {
  };
 }
 
+str ppRequireClause([]) = ""; 
+str ppRequireClause([req]) = 
+"REQUIRES
+' <for (p <- req.predicates){> 
+'    <ppPredicate(p)>
+' <}>
+"; 
+
+str ppEnsureClause(ps) = 
+"ENSURES
+' <for (p <- ps){>
+'   <ppPredicate(p)>
+' <}> 
+"; 
+
+str ppPredicate(predicate(n, objs, [])) = "<n>[<ppList(mapper(objs, ppArgument))>];";
+str ppPredicate(predicate(n, objs, [e])) = "<n>[<ppList(mapper(objs, ppArgument))>] after <e>;";
+
+  
 str ppList(list[str] elements, str delimiter = ", ") = intercalate(delimiter, elements);

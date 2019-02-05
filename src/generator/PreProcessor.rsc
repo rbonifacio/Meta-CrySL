@@ -14,7 +14,9 @@ public list[Spec] executePreProcessor(map[str, Spec] specifications, map[str, Re
 	
 
 Spec preProcess(Refinement r, Spec s) = top-down visit(s)	{
-	case metaVariable(var) => bindVariable(r, var)  
+	case constraintClause(cs) => updateConstraints(r, cs)
+	case metaVariable(var) => bindVariable(r, var)
+	   
 };
 
 LiteralSet bindVariable(Refinement r, str var) {
@@ -22,4 +24,9 @@ LiteralSet bindVariable(Refinement r, str var) {
      case [literalSet(x)] : return literalSet(x); 
      default  : throw  "invalid definition for variable " + var; 
   };
+}
+
+ConstraintClause updateConstraints(Refinement r, list[Constraint] cs) {
+	cs = cs + [c | addConstraint(c) <- r.refinements]; 
+	return constraintClause(cs); 
 }
