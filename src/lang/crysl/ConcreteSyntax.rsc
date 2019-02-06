@@ -9,7 +9,7 @@ import lang::common::ConcreteSyntax;
 
 /* The start symbol SpecDef */ 
 start syntax SpecDef 
-  = spec: "abstract"? "SPEC" QualifiedType  ObjectClauseDef EventClauseDef EventOrderDef ConstraintClauseDef RequireClauseDef? EnsureClauseDef ;
+  = spec: "abstract"? "SPEC" QualifiedType ObjectClauseDef EventClauseDef EventOrderDef ConstraintClauseDef RequireClauseDef? EnsureClauseDef ;
 
 /* Definitions for the object declaration section */ 
 
@@ -17,7 +17,9 @@ syntax ObjectClauseDef
   = objectClause: "OBJECTS" ObjectDef+; 
   
 syntax ObjectDef 
-  = objectDecl: QualifiedType ("[" "]")? Id ";" ; 
+  = objectDecl: QualifiedType ("[" "]")? Id ";"  
+  | metaObjectDecl: MetaVariable ("[" "]")? Id ";" 
+  ;
 
 /* Definitions for the event declaration section */ 
   

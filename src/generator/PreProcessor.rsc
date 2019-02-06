@@ -13,16 +13,24 @@ public list[Spec] executePreProcessor(map[str, Spec] specifications, map[str, Re
   = [preProcess(r, s) | k <- refinements, r := refinements[k], s := specifications[r.baseSpec]]; 
 	
 
-Spec preProcess(Refinement r, Spec s) = top-down visit(s)	{
+Spec preProcess(Refinement r, Spec s) = top-down visit(s) {
 	case constraintClause(cs) => updateConstraints(r, cs)
 	case eventClause(es) => updateEvents(r, es)  
-	case metaVariable(var) => bindVariable(r, var)
+	case metaObjectDecl(metaVar, arr, varName) => bindObjectDecl(r, metaVar, arr, varName) 
+	case metaVariableSet(var) => bindLiteralSet(r, var)
 };
 
-LiteralSet bindVariable(Refinement r, str var) {
-  switch([s | defineVar(v,s) <- r.refinements, v == var]) {
+ObjectDecl bindObjectDecl(Refinement r, MetaVariable var, bool arr, str varName) {
+	switch([s | defineQualifiedType(v,s) <- r.refinements, metaVariable(v) == var]) {
+     case [qt] : return objectDecl(qt, arr, varName); 
+     default  : throw  "invalid definition for variable "; 
+  };
+}
+
+LiteralSet bindLiteralSet(Refinement r, MetaVariable var) {
+  switch([s | defineLiteralSet(v,s) <- r.refinements, metaVariable(v) == var]) {
      case [literalSet(x)] : return literalSet(x); 
-     default  : throw  "invalid definition for variable " + var; 
+     default  : throw  "invalid definition for variable "; 
   };
 }
 

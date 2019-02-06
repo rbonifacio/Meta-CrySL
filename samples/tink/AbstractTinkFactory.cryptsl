@@ -1,0 +1,20 @@
+SPEC AbstractTinkFactory
+
+OBJECTS
+    int foo; 
+	com.google.crypto.tink.KeysetHandle ksh;
+	${primitive} primitive; 
+
+EVENTS
+	gp : mac = getPrimitive(ksh);
+
+ORDER
+	gp
+
+CONSTRAINTS 
+    foo in {128, 256};  
+REQUIRES 
+	generatedKeySet[ksh]; 
+	
+ENSURES
+	setPrimitive[primitive];

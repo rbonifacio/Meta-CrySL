@@ -21,8 +21,10 @@ lexical Path
 syntax LiteralDef 
   = intLiteral: Natural | stringLiteral: String ; 
 
+syntax MetaVariable = metaVariable: "${" Id "}" ; 
+
 syntax LiteralSetDef = literalSet: "{" {LiteralDef ","}+ "}" 
-                     | metaVariable: "${" Id "}"
+                     | metaVariableSet: MetaVariable
                      ; 
 
 lexical Comment =

@@ -5,6 +5,7 @@ import lang::crysl::AbstractSyntax;
 
 public data Refinement = refineSpec(str name, str baseSpec, list[RefinementElement] refinements); 
 
-public data RefinementElement = defineVar(str varName, LiteralSet values)
+public data RefinementElement = defineLiteralSet(str varName, LiteralSet values)
+                              | defineQualifiedType(str varName, str qualifiedType)
                               | addConstraint(Constraint ctr)
                               | addEvent(EventDecl evt);

@@ -1,0 +1,4 @@
+SPEC KeyGenerator REFINES javax.crypto.KeyGenerator {
+	define algorithm = {"AES", "BLOWFISH", "CAMELLIA", "HmacSHA224", "HmacSHA256", "HmacSHA384", "HmacSHA512", "RIJNDAEL", "Serpent", "Triple-DES"};
+	add constraint alg in {"AES"} => keySize in {128, 192, 256};
+}

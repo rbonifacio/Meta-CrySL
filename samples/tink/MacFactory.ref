@@ -1,0 +1,3 @@
+SPEC MacFactory REFINES AbstractTinkFactory {
+	define primitive = com.google.crypto.tink.Mac;
+}

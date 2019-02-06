@@ -5,6 +5,7 @@ public data Literal
   | stringLiteral(str strValue)
   ;
 
+public data MetaVariable = metaVariable(str varName);
 
 public data LiteralSet = literalSet(set[Literal] values)
-                       | metaVariable(str varName);
+                       | metaVariableSet(MetaVariable metaVar); 
