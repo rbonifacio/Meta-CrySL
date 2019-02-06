@@ -86,14 +86,14 @@ str ppEventExp(EventExp e) {
 str ppConstraintClause(list[Constraint] cs) = 
 "CONSTRAINTS
 ' <for(c <- cs) {>  
-'    <ppConstraint(c)> 
+'    <ppConstraint(c)>; 
 ' <}>
 ";
  
 str ppConstraint(Constraint c) { 
 	switch(c) {
-		case inSetConstraint(name, vs) : return "<name> in <ppLiteralSet(vs)>;";
-		case impliesConstraint(lhs, rhs) : return "<ppConstraint(lhs)> =\> <ppConstraint(rhs)>;";
+		case inSetConstraint(name, vs) : return "<name> in <ppLiteralSet(vs)>";
+		case impliesConstraint(lhs, rhs) : return "<ppConstraint(lhs)> =\> <ppConstraint(rhs)>";
 		
 		default: return "error"; 
 	}	 
