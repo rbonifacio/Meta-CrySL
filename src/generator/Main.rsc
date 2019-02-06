@@ -21,6 +21,9 @@ void main(loc configurationFile) {
 	map[str, Spec] specs = executePreProcessor(ss, rs);
 	
 	for(k <- specs) {
-		println(prettyPrint(specs[k]));
+		str outFile = c.out + "/" + k + ".cryptsl" ; 
+		loc location = |file:///| + outFile; 
+		writeFile(location, prettyPrint(specs[k]));
 	}
+	println("done"); 
 }
