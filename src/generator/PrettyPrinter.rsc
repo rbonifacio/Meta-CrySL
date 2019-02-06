@@ -94,9 +94,19 @@ str ppConstraint(Constraint c) {
 	switch(c) {
 		case inSetConstraint(name, vs) : return "<name> in <ppLiteralSet(vs)>";
 		case impliesConstraint(lhs, rhs) : return "<ppConstraint(lhs)> =\> <ppConstraint(rhs)>";
-		
+		case ltConstraint(lhs, rhs) : return "<ppSimpleConstraint(lhs)> \< <ppSimpleConstraint(rhs)>";
+		case gtConstraint(lhs, rhs) : return "<ppSimpleConstraint(lhs)> \> <ppSimpleConstraint(rhs)>";
+		case leqConstraint(lhs, rhs) : return "<ppSimpleConstraint(lhs)> \<= <ppSimpleConstraint(rhs)>";
+		case geqConstraint(lhs, rhs) : return "<ppSimpleConstraint(lhs)> \>= <ppSimpleConstraint(rhs)>";
 		default: return "error"; 
 	}	 
+}
+
+str ppSimpleConstraint(SimpleConstraint c) {
+	switch(c) {
+		case expNatural(n) : return "<n>";
+		case expVar(v) : return "<v>"; 
+	}
 }
 
 str ppLiteralSet(LiteralSet s) {
