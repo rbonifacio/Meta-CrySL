@@ -6,7 +6,6 @@ import ParseTree;
 import lang::crysl::AbstractSyntax; 
 import lang::refinement::AbstractSyntax;
 
-
 import lang::configuration::AbstractSyntax; 
 import lang::configuration::ConcreteSyntax; 
 import lang::configuration::Parser;

@@ -21,7 +21,7 @@ Spec preProcess(Refinement r, Spec s) = top-down visit(s) {
 };
 
 ObjectDecl bindObjectDecl(Refinement r, MetaVariable var, bool arr, str varName) {
-	switch([s | defineQualifiedType(v,s) <- r.refinements, metaVariable(v) == var]) {
+  switch([s | defineQualifiedType(v,s) <- r.refinements, metaVariable(v) == var]) {
      case [qt] : return objectDecl(qt, arr, varName); 
      default  : throw  "invalid definition for variable "; 
   };
