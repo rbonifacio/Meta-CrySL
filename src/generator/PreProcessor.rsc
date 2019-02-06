@@ -9,8 +9,8 @@ import lang::refinement::AbstractSyntax;
 
 import generator::PrettyPrinter; 
 
-public list[Spec] executePreProcessor(map[str, Spec] specifications, map[str, Refinement] refinements) 
-  = [preProcess(r, s) | k <- refinements, r := refinements[k], s := specifications[r.baseSpec]]; 
+public map[str, Spec] executePreProcessor(map[str, Spec] specifications, map[str, Refinement] refinements) 
+  = (s.name: preProcess(r, s) | k <- refinements, r := refinements[k], s := specifications[r.baseSpec]); 
 	
 
 Spec preProcess(Refinement r, Spec s) = top-down visit(s) {

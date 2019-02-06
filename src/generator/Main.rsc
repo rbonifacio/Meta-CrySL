@@ -18,9 +18,9 @@ import generator::PrettyPrinter;
 void main(loc configurationFile) {
 	Configuration c = parseConfiguration(configurationFile); 
 	<ss, rs> = loadModules(c); 
-	list[Spec] specs = executePreProcessor(ss, rs);
+	map[str, Spec] specs = executePreProcessor(ss, rs);
 	
-	for(s <- specs) {
-		println(prettyPrint(s)); 
+	for(k <- specs) {
+		println(prettyPrint(specs[k]));
 	}
 }
