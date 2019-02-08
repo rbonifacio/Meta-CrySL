@@ -15,14 +15,14 @@ import generator::PreProcessor;
 import generator::PrettyPrinter; 
 
 void main(loc configurationFile) {
-	Configuration c = parseConfiguration(configurationFile); 
-	<ss, rs> = loadModules(c); 
-	map[str, Spec] specs = executePreProcessor(ss, rs);
-	
-	for(k <- specs) {
-		str outFile = c.out + "/" + k + ".cryptsl" ; 
-		loc location = |file:///| + outFile; 
-		writeFile(location, prettyPrint(specs[k]));
-	}
-	println("done"); 
+   Configuration c = parseConfiguration(configurationFile); 
+   export(c, executePreProcessor(loadModules(c)));
+   println("done"); 
+}
+
+void export(Configuration c, map[str, Spec] specs) {
+   for(k <- specs) {
+      loc p = |file:///| + c.out + "/" + k + ".cryptsl";
+      writeFile(p, specs[k]);  
+   }
 }

@@ -9,7 +9,7 @@ import lang::refinement::AbstractSyntax;
 
 import generator::PrettyPrinter; 
 
-public map[str, Spec] executePreProcessor(map[str, Spec] specifications, map[str, Refinement] refinements) 
+public map[str, Spec] executePreProcessor(<map[str, Spec] specifications, map[str, Refinement] refinements>) 
   = (s.name: preProcess(r, s) | k <- refinements, r := refinements[k], s := specifications[r.baseSpec]); 
 	
 
