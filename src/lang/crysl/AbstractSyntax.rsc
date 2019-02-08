@@ -64,3 +64,5 @@ public data EnsureClause = ensureClause(list[Predicate] predicates);
 
 public data Predicate = predicate(str pred, list[Argument] objects, list[str] event); 
 
+
+Spec renameSpec(str n, Spec s) { s[name = n]; return s;}

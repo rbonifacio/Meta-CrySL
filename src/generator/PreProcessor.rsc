@@ -10,11 +10,26 @@ import lang::refinement::AbstractSyntax;
 
 import generator::PrettyPrinter; 
 
-public map[str, Spec] executePreProcessor(<map[str, Spec] specifications, map[str, Refinement] refinements>) 
-  = (s.name: preProcess(r, s) | k <- refinements, r := refinements[k], s := specifications[r.baseSpec]); 
+public map[str, Spec] executePreProcessor(<map[str, Spec] specifications, map[str, Refinement] refinements>) {
+	// run the actual preprocessors. 
+	specifications = (s.name: preProcess(r, s) | k <- refinements, r := refinements[k], s := specifications[r.baseSpec]); 
 	
+	
+	// as a final step, rename the specifications. 
+	return (s.name : s | k <- refinements, r := refinements[k], s:= rename(r, specifications[r.baseSpec])); 
+}
 
-Spec preProcess(Refinement r, Spec s) = top-down visit(s) {
+/* renames a specification using a rename refinement */ 
+
+private Spec rename(Refinement r, Spec s) {
+	names = [n | rename(n) <- r.refinements]; 
+	switch(names) {
+		case [x] : { Spec renamed =  s[name = x]; return renamed; }
+		default  : return s;  
+	};
+}
+	
+private Spec preProcess(Refinement r, Spec s) = top-down visit(s) {
 	case constraintClause(cs) => updateConstraints(r, cs)
 	case eventClause(es) => updateEvents(r, es)  
 	case metaObjectDecl(metaVar, arr, varName) => bindObjectDecl(r, metaVar, arr, varName) 
@@ -22,7 +37,7 @@ Spec preProcess(Refinement r, Spec s) = top-down visit(s) {
 	case metaVariableSet(var) => bindLiteralSet(r, var)
 };
 
-ObjectDecl bindObjectDecl(Refinement r, MetaVariable var, bool arr, str varName) {
+private ObjectDecl bindObjectDecl(Refinement r, MetaVariable var, bool arr, str varName) {
   switch([s | defineQualifiedType(v,s) <- r.refinements, metaVariable(v) == var]) {
      case [qt] : return objectDecl(qt, arr, varName); 
      default  : throw  "invalid definition for variable "; 
@@ -31,7 +46,7 @@ ObjectDecl bindObjectDecl(Refinement r, MetaVariable var, bool arr, str varName)
 
 /* bind a spec parameter of an object declaration */ 
 
-ObjectDecl bindTypeParameter(Refinement r, Spec s, str pmt, bool arr, str varName) {
+private ObjectDecl bindTypeParameter(Refinement r, Spec s, str pmt, bool arr, str varName) {
 	map[str, str] env = (f:a | <f, a> <- zip(s.formalSpecParameters, r.actualSpecParameters)); 
 	
 	if(pmt in env) {
@@ -47,13 +62,13 @@ ObjectDecl bindTypeParameter(Refinement r, Spec s, str pmt, bool arr, str varNam
 }
 
 
-LiteralSet bindLiteralSet(Refinement r, MetaVariable var) {
+private LiteralSet bindLiteralSet(Refinement r, MetaVariable var) {
   switch([s | defineLiteralSet(v,s) <- r.refinements, metaVariable(v) == var]) {
      case [literalSet(x)] : return literalSet(x); 
      default  : throw  "invalid definition for variable "; 
   };
 }
 
-EventClause updateEvents(Refinement r, list[EventDecl] es) = eventClause(es + [e | addEvent(e) <- r.refinements]); 
+private EventClause updateEvents(Refinement r, list[EventDecl] es) = eventClause(es + [e | addEvent(e) <- r.refinements]); 
 
-ConstraintClause updateConstraints(Refinement r, list[Constraint] cs) = constraintClause(cs + [c | addConstraint(c) <- r.refinements]);
+private ConstraintClause updateConstraints(Refinement r, list[Constraint] cs) = constraintClause(cs + [c | addConstraint(c) <- r.refinements]);
