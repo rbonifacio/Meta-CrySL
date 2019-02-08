@@ -1,6 +1,7 @@
 module generator::PreProcessor
 
 import IO;
+import List; 
 import Map;
 
 import lang::common::AbstractSyntax; 
@@ -17,6 +18,7 @@ Spec preProcess(Refinement r, Spec s) = top-down visit(s) {
 	case constraintClause(cs) => updateConstraints(r, cs)
 	case eventClause(es) => updateEvents(r, es)  
 	case metaObjectDecl(metaVar, arr, varName) => bindObjectDecl(r, metaVar, arr, varName) 
+	case typeParameterObjectDecl(pmt, arr, varName) => bindTypeParameter(r, s, pmt, arr, varName) 
 	case metaVariableSet(var) => bindLiteralSet(r, var)
 };
 
@@ -26,6 +28,24 @@ ObjectDecl bindObjectDecl(Refinement r, MetaVariable var, bool arr, str varName)
      default  : throw  "invalid definition for variable "; 
   };
 }
+
+/* bind a spec parameter of an object declaration */ 
+
+ObjectDecl bindTypeParameter(Refinement r, Spec s, str pmt, bool arr, str varName) {
+	map[str, str] env = (f:a | <f, a> <- zip(s.formalSpecParameters, r.actualSpecParameters)); 
+	
+	if(pmt in env) {
+		return objectDecl(env[pmt], arr, varName); 
+	}
+	/* 
+	 * If there is no binding for the type parameter, 
+	 * we keep the specification with the spec parameter in 
+	 * the object declaration. In this way, we could implement 
+	 * a "staged configuration". 
+	 */ 
+	return typeParameterObjectDecl(pmt, arr, varName);
+}
+
 
 LiteralSet bindLiteralSet(Refinement r, MetaVariable var) {
   switch([s | defineLiteralSet(v,s) <- r.refinements, metaVariable(v) == var]) {

@@ -7,17 +7,21 @@ import lang::common::AbstractSyntax;
 
 public data Spec = spec(bool abstract, 
                         str name, 
+                        list[str] formalSpecParameters,
                         ObjectClause objectClause, 
                         EventClause eventClause, 
                         EventOrder eventOrder, 
                         ConstraintClause constraintClause, 
                         list[RequireClause] requireClause, 
                         EnsureClause ensureClause);
-   
+                        
+
 public data ObjectClause = objectClause(list[ObjectDecl] objectDecls); 
    
 public data ObjectDecl = objectDecl(str qualifiedType, bool arr, str varName)
-                       | metaObjectDecl(MetaVariable metaVar, bool arr, str varName); 
+                       | metaObjectDecl(MetaVariable metaVar, bool arr, str varName)
+                       | typeParameterObjectDecl(str pmt, bool arr, str varName)
+                       ; 
 
 public data EventClause = eventClause(list[EventDecl] eventDecls); 
 

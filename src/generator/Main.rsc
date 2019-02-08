@@ -22,7 +22,9 @@ void main(loc configurationFile) {
 
 void export(Configuration c, map[str, Spec] specs) {
    for(k <- specs) {
-      loc p = |file:///| + c.out + "/" + k + ".cryptsl";
-      writeFile(p, specs[k]);  
+      println(prettyPrint(specs[k]));
+      //loc p = |file:///| + c.out + "/" + k + ".cryptsl";
+      //println(p);
+      //writeFile(p, prettyPrint(specs[k]));  
    }
 }

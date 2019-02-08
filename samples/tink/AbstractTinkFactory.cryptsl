@@ -1,9 +1,9 @@
-SPEC AbstractTinkFactory
+SPEC AbstractTinkFactory<T>
 
 OBJECTS
     int foo; 
 	com.google.crypto.tink.KeysetHandle ksh;
-	${primitive} primitive; 
+	<T> primitive; 
 
 EVENTS
 	gp : mac = getPrimitive(ksh);

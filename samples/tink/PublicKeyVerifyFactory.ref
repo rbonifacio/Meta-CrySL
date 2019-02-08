@@ -1,3 +1,0 @@
-SPEC PublicKeyVerifyFactory REFINES AbstractTinkFactory {
-	define primitive = com.google.crypto.tink.PublicKeyVerify;
-}

@@ -104,12 +104,13 @@ test bool parseEnsureClauseDef() {
 
 // Test Cases for parsing Refinment Modules 
 test bool parseRefinementDef() {
-	str refinementDef = "SPEC foo REFINES bar { " + defineVar + " }" ; 
+	str refinementDef = "SPEC foo REFINES bar\<F\> { " + defineVar + " }" ; 
 	parseTree = parse(#RefinementDef, refinementDef);
 	absTree = implode(#Refinement, parseTree); 
 	
 	assert absTree.name == "foo"; 
 	assert absTree.baseSpec == "bar"; 
+	assert size(absTree.actualSpecParameters) == 1; 
 	assert size(absTree.refinements) == 1; 
 	
 	return true; 
