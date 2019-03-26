@@ -1,0 +1,39 @@
+SPEC AbstractMesssageDigest<T>
+
+OBJECTS
+	<T> digest;
+	byte[] edigest;
+	byte input;
+	byte[] inputArray;
+	int inputOff;
+	byte[] outputArray;
+	int outputOff;
+	int len;
+	
+EVENTS
+	c1 : <T>();
+	c2 : <T>(digest);
+	c3 : <T>(edigest);
+	Cons := c1 | c2 | c3;
+	
+	u1 : update(input);
+	u2 : update(inputArray, inputOff, len);
+	Updates := u1 | u2;
+	
+	f : doFinal(outputArray, outputOff);
+	Finals := f;
+	
+	r : reset();
+	
+ORDER
+	Cons, Updates+, Finals
+	
+CONSTRAINTS
+	len > inputOff;
+	
+REQUIRES
+	generatedDigest[digest];
+	
+ENSURES
+	generatedDigest[this] after Cons;
+	digested[outputArray];

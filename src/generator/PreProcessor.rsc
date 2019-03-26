@@ -3,6 +3,7 @@ module generator::PreProcessor
 import IO;
 import List; 
 import Map;
+import String; 
 
 import lang::common::AbstractSyntax; 
 import lang::crysl::AbstractSyntax; 
@@ -33,7 +34,8 @@ private Spec preProcess(Refinement r, Spec s) = top-down visit(s) {
 	case constraintClause(cs) => updateConstraints(r, cs)
 	case eventClause(es) => updateEvents(r, es)  
 	case metaObjectDecl(metaVar, arr, varName) => bindObjectDecl(r, metaVar, arr, varName) 
-	case typeParameterObjectDecl(pmt, arr, varName) => bindTypeParameter(r, s, pmt, arr, varName) 
+	case typeParameterObjectDecl(pmt, arr, varName) => bindTypeParameter(r, s, pmt, arr, varName)
+	case typeParameterMethodDecl(name, args) => bindTypeParameterMethod(r, s, name, args) 
 	case metaVariableSet(var) => bindLiteralSet(r, var)
 };
 
@@ -61,6 +63,17 @@ private ObjectDecl bindTypeParameter(Refinement r, Spec s, str pmt, bool arr, st
 	return typeParameterObjectDecl(pmt, arr, varName);
 }
 
+/* bind a typed parameter of a method */ 
+
+private Method bindTypeParameterMethod(Refinement r, Spec s, str name, list[Argument] args)  {
+	map[str, str] env = (f:a | <f, a> <- zip(s.formalSpecParameters, r.actualSpecParameters)); 
+	
+	if(name in env) {
+		return method(baseType(env[name]), args); 
+	}
+	
+	return typeParameterMethodDecl(name, args); 
+}
 
 private LiteralSet bindLiteralSet(Refinement r, MetaVariable var) {
   switch([s | defineLiteralSet(v,s) <- r.refinements, metaVariable(v) == var]) {
@@ -72,3 +85,12 @@ private LiteralSet bindLiteralSet(Refinement r, MetaVariable var) {
 private EventClause updateEvents(Refinement r, list[EventDecl] es) = eventClause(es + [e | addEvent(e) <- r.refinements]); 
 
 private ConstraintClause updateConstraints(Refinement r, list[Constraint] cs) = constraintClause(cs + [c | addConstraint(c) <- r.refinements]);
+
+private str baseType(str fullQualifiedName) {
+	int idx = findLast(fullQualifiedName, ".");
+	
+	if(idx == -1) {
+		return fullQualifiedName; 
+	}
+	return substring(fullQualifiedName, idx + 1, size(fullQualifiedName));
+}

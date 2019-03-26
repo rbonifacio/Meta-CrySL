@@ -1,0 +1,3 @@
+SPEC SHA384Digest REFINES AbstractMesssageDigest<org.bouncycastle.crypto.digests.SHA384Digest> {
+	rename spec SHA384Digest;
+}

@@ -1,0 +1,34 @@
+SPEC AeadFactory
+  
+OBJECTS 
+   
+   int foo; 
+   
+   com.google.crypto.tink.KeysetHandle ksh; 
+   
+   com.google.crypto.tink.Aead primitive; 
+ 
+
+EVENTS 
+   
+    gp: mac = getPrimitive(ksh); 
+ 
+
+ORDER
+  gp
+
+CONSTRAINTS
+   
+    foo in {256, 128}; 
+ 
+
+REQUIRES
+  
+    generatedKeySet[ksh];
+ 
+
+ENSURES
+ 
+   setPrimitive[primitive];
+  
+

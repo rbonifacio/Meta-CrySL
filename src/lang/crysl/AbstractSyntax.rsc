@@ -53,7 +53,8 @@ public data Constraint = inSetConstraint(str varName, LiteralSet values)
 public data SimpleConstraint = expNatural(int natValue)
                              | expVar(str varName);
                               
-public data Method = method(str name, list[Argument] formalArgs);
+public data Method = method(str name, list[Argument] formalArgs)
+                   | typeParameterMethodDecl(str name, list[Argument] formalArgs);
                         
 public data Argument = wildcard() 
                      | concreteParameter(str parameterName); 

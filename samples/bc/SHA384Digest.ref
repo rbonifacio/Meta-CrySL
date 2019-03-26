@@ -1,0 +1,3 @@
+SPEC SHA256Digest REFINES AbstractMesssageDigest<org.bouncycastle.crypto.digests.SHA256Digest> {
+	rename spec SHA256Digest;
+}

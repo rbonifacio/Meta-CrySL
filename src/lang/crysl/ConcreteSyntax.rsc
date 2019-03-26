@@ -34,7 +34,9 @@ syntax EventDef
   ;  
   
 syntax MethodDef 
-  = method: Id "(" {ArgumentDef ","}* ")" ;  
+  = method: Id "(" {ArgumentDef ","}* ")" 
+  | typeParameterMethodDecl: "\<" Id "\>""(" {ArgumentDef ","}* ")"
+  ;  
   
 syntax ArgumentDef 
   = wildcard: "_"
