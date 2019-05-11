@@ -3,6 +3,7 @@ module generator::Main
 import IO;
 import ParseTree; 
 
+import lang::crysl::Parser; 
 import lang::crysl::AbstractSyntax; 
 import lang::refinement::AbstractSyntax;
 
@@ -18,6 +19,14 @@ void main(loc configurationFile) {
    Configuration c = parseConfiguration(configurationFile); 
    export(c, executePreProcessor(loadModules(c)));
    println("done"); 
+}
+
+void compileMetaCrysl(loc file) {
+	try { 
+		parseSpecification(file);
+	}
+	catch : println("error compiling file");  
+	
 }
 
 void export(Configuration c, map[str, Spec] specs) {
