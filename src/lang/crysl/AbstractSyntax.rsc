@@ -65,7 +65,7 @@ public data RequireClause = requireClause(list[Predicate] predicates);
 
 public data EnsureClause = ensureClause(list[Predicate] predicates); 
 
-public data Predicate = predicate(str pred, list[Argument] objects, list[str] event); 
+public data Predicate = predicate(bool negation, str pred, list[Argument] objects, list[str] event); 
 
 
 Spec renameSpec(str n, Spec s) { s[name = n]; return s;}

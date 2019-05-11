@@ -15,7 +15,7 @@ EVENTS
 	
 	g1: getInstance(randAlg);
 	g2: getInstance(randAlg, _);
-	gI: getInstanceStrong(); //only for Java 8 and above
+	gI: getInstanceStrong(); 
 	Gets := g1 | g2 | gI;
 	
 	Ins := Gets | Cons;

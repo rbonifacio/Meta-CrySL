@@ -90,7 +90,7 @@ syntax EnsureClauseDef
   = ensureClause: "ENSURES" PredicateDef+; 
 
 syntax PredicateDef 
-  = predicate: Id "[" {ArgumentDef ","}+"]" ("after" Id)?  ";" ; 
+  = predicate: "!"? Id "[" {ArgumentDef ","}+"]" ("after" Id)?  ";" ; 
                      
 keyword Keyword 
   = "SPEC" | "OBJECTS" | "EVENTS" | "ORDER" 
