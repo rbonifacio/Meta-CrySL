@@ -74,7 +74,9 @@ syntax ConstraintDef
 
                      
 syntax SimpleConstraintDef = expNatural : Natural
-                           | expVar : Id;   
+                           | expVar : Id
+                           | objectProperty: Id "(" Id ")"
+                           ;   
   
 /* Definitions for the require declaration section */ 
 

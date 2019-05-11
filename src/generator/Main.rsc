@@ -22,11 +22,7 @@ void main(loc configurationFile) {
 }
 
 void compileMetaCrysl(loc file) {
-	try { 
 		parseSpecification(file);
-	}
-	catch : println("error compiling file");  
-	
 }
 
 void export(Configuration c, map[str, Spec] specs) {

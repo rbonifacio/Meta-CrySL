@@ -1,4 +1,4 @@
 SPEC SecureRandom REFINES java.security.SecureRandom {
-	define algorithm = {"DEFAULT", "NonceAndIV"}; 
+	define algorithm = {"DEFAULT", "NonceAndIV", "NativePRNG", "NativePRNGBlocking", }; 
 	add constraint provider in {"BC"}; 
 }

@@ -51,7 +51,9 @@ public data Constraint = inSetConstraint(str varName, LiteralSet values)
 
                      
 public data SimpleConstraint = expNatural(int natValue)
-                             | expVar(str varName);
+                             | expVar(str varName)
+                             | objectProperty(str property, str object)
+                             ;
                               
 public data Method = method(str name, list[Argument] formalArgs)
                    | typeParameterMethodDecl(str name, list[Argument] formalArgs);
