@@ -9,7 +9,7 @@ import lang::common::ConcreteSyntax;
 
 /* The start symbol SpecDef */ 
 start syntax SpecDef 
-  = spec: "abstract"? "SPEC" QualifiedType  ("\<" {Id ","}+ "\>")? ObjectClauseDef EventClauseDef EventOrderDef ConstraintClauseDef RequireClauseDef? EnsureClauseDef ;
+  = spec: "abstract"? "SPEC" QualifiedType  ("\<" {Id ","}+ "\>")? ObjectClauseDef EventClauseDef EventOrderDef ConstraintClauseDef RequireClauseDef? EnsureClauseDef? ;
 
 
 /* Definitions for the object declaration section */ 
@@ -64,34 +64,45 @@ syntax ConstraintClauseDef
   = constraintClause: "CONSTRAINTS" {ConstraintDef ";"}+ ";" ; 
 
 syntax ConstraintDef 
-  = inSetConstraint: Id "in" LiteralSetDef 
+  = inSetConstraint: SimpleExpressionDef "in" LiteralSetDef
+  | predicate: "!"? Id "[" {SimpleExpressionDef ","}+"]" ("after" Id)?
+  | left andConstraint: ConstraintDef "&&" ConstraintDef
+  | left orConstraint: ConstraintDef "||" ConstraintDef 
+  >
   | left impliesConstraint: ConstraintDef "=\>" ConstraintDef 
-  > left ltConstraint: SimpleConstraintDef "\<" SimpleConstraintDef
-  | left gtConstraint: SimpleConstraintDef "\>" SimpleConstraintDef
-  | left leqConstraint: SimpleConstraintDef "\<=" SimpleConstraintDef
-  | left geqConstraint: SimpleConstraintDef "\>=" SimpleConstraintDef
+  > left ltConstraint: SimpleExpressionDef "\<" SimpleExpressionDef
+  | left gtConstraint: SimpleExpressionDef "\>" SimpleExpressionDef
+  | left leqConstraint: SimpleExpressionDef "\<=" SimpleExpressionDef
+  | left geqConstraint: SimpleExpressionDef "\>=" SimpleExpressionDef
+  | left eqConstraint: SimpleExpressionDef "==" SimpleExpressionDef
+  | left neqConstraint: SimpleExpressionDef "!=" SimpleExpressionDef
   ; 
-
-                     
-syntax SimpleConstraintDef = expNatural : Natural
-                           | expVar : Id
-                           | objectProperty: Id "(" Id ")"
-                           ;   
   
+syntax UtilityFunction = partFunction : "part" "(" Natural "," String "," Id ")" ;
+                     
+syntax SimpleExpressionDef = wildcardParameter: "_"
+                           > expNatural : Natural
+                           | expVar : Id
+                           | functionCall: Id "(" {ParameterDef ","}* ")"
+                           ;   
+                           
+syntax ParameterDef =  varParameter : Id
+                    | natParameter : Natural
+                    | strParameter : String 
+                    ;
+                      
 /* Definitions for the require declaration section */ 
 
 syntax RequireClauseDef
-  = requireClause: "REQUIRES" PredicateDef+; 
+  = requireClause: "REQUIRES" {ConstraintDef ";"}+ ";" ; 
   
   
 /* Definitions for the ensure declaration section */ 
         
 syntax EnsureClauseDef
-  = ensureClause: "ENSURES" PredicateDef+; 
+  = ensureClause: "ENSURES" {ConstraintDef ";"}+ ";" ; 
 
-syntax PredicateDef 
-  = predicate: "!"? Id "[" {ArgumentDef ","}+"]" ("after" Id)?  ";" ; 
-                     
+
 keyword Keyword 
   = "SPEC" | "OBJECTS" | "EVENTS" | "ORDER" 
   | "CONSTRAINTS" | "ENSURES" | "after" 

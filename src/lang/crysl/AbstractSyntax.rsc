@@ -13,7 +13,7 @@ public data Spec = spec(bool abstract,
                         EventOrder eventOrder, 
                         ConstraintClause constraintClause, 
                         list[RequireClause] requireClause, 
-                        EnsureClause ensureClause);
+                        list[EnsureClause] ensureClause);
                         
 
 public data ObjectClause = objectClause(list[ObjectDecl] objectDecls); 
@@ -41,19 +41,30 @@ public data EventExp = optional(EventExp)
                      
 public data ConstraintClause = constraintClause(list[Constraint] constraints); 
 
-public data Constraint = inSetConstraint(str varName, LiteralSet values) 
+public data Constraint = inSetConstraint(SimpleExpression constraint, LiteralSet values) 
+ 					   | predicate(bool negation, str pred, list[SimpleExpression] objects, list[str] event)
+                       | andConstraint(Constraint lhs, Constraint rhs) 
+					   | orConstraint(Constraint lhs, Constraint rhs) 
                        | impliesConstraint(Constraint lhs, Constraint rhs)
-                       | ltConstraint(SimpleConstraint, SimpleConstraint)
-                       | gtConstraint(SimpleConstraint, SimpleConstraint) 
-                       | leqConstraint(SimpleConstraint, SimpleConstraint)
-                       | geqConstraint(SimpleConstraint, SimpleConstraint) 
+                       | ltConstraint(SimpleExpression, SimpleExpression)
+                       | gtConstraint(SimpleExpression, SimpleExpression) 
+                       | leqConstraint(SimpleExpression, SimpleExpression)
+                       | geqConstraint(SimpleExpression, SimpleExpression) 
+                       | eqConstraint(SimpleExpression, SimpleExpression)
+                       | neqConstraint(SimpleExpression, SimpleExpression)
                        ;
 
                      
-public data SimpleConstraint = expNatural(int natValue)
+public data SimpleExpression = expNatural(int natValue)
                              | expVar(str varName)
-                             | objectProperty(str property, str object)
+                             | functionCall(str funtionName, list[Parameter] pmts)
+                             | wildcardParameter()
                              ;
+
+public data Parameter = varParameter(str var)
+                      | natParameter(int val)
+                      | strParameter(str txt)
+                      ;                               
                               
 public data Method = method(str name, list[Argument] formalArgs)
                    | typeParameterMethodDecl(str name, list[Argument] formalArgs);
@@ -61,11 +72,8 @@ public data Method = method(str name, list[Argument] formalArgs)
 public data Argument = wildcard() 
                      | concreteParameter(str parameterName); 
 
-public data RequireClause = requireClause(list[Predicate] predicates); 
+public data RequireClause = requireClause(list[Constraint] constraints); 
 
-public data EnsureClause = ensureClause(list[Predicate] predicates); 
-
-public data Predicate = predicate(bool negation, str pred, list[Argument] objects, list[str] event); 
-
+public data EnsureClause = ensureClause(list[Constraint] constraints); 
 
 Spec renameSpec(str n, Spec s) { s[name = n]; return s;}
