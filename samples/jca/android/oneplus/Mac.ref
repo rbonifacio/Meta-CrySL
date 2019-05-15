@@ -1,0 +1,3 @@
+SPEC MessageDigest REFINES javax.crypto.Mac {
+	define algorithm = {"HmacMD5", "HmacSHA1", "HmacSHA256", "HmacSHA384", "HmacSHA512", "PBEwithHmacSHA", "PBEwithHmacSHA1"};
+}

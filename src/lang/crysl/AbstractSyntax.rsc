@@ -43,15 +43,12 @@ public data ConstraintClause = constraintClause(list[Constraint] constraints);
 
 public data Constraint = inSetConstraint(SimpleExpression constraint, LiteralSet values) 
  					   | predicate(bool negation, str pred, list[SimpleExpression] objects, list[str] event)
-                       | andConstraint(Constraint lhs, Constraint rhs) 
+ 					   | noCallTo(str label) 
+ 					   | callTo(str label)
+ 					   | andConstraint(Constraint lhs, Constraint rhs) 
 					   | orConstraint(Constraint lhs, Constraint rhs) 
                        | impliesConstraint(Constraint lhs, Constraint rhs)
-                       | ltConstraint(SimpleExpression, SimpleExpression)
-                       | gtConstraint(SimpleExpression, SimpleExpression) 
-                       | leqConstraint(SimpleExpression, SimpleExpression)
-                       | geqConstraint(SimpleExpression, SimpleExpression) 
-                       | eqConstraint(SimpleExpression, SimpleExpression)
-                       | neqConstraint(SimpleExpression, SimpleExpression)
+                       | simpleExpression(SimpleExpression exp)
                        ;
 
                      
@@ -59,6 +56,14 @@ public data SimpleExpression = expNatural(int natValue)
                              | expVar(str varName)
                              | functionCall(str funtionName, list[Parameter] pmts)
                              | wildcardParameter()
+                             | addConstraint(SimpleExpression, SimpleExpression)
+ 					         | subExpression(SimpleExpression, SimpleExpression)  
+                             | ltConstraint(SimpleExpression, SimpleExpression)
+                             | gtConstraint(SimpleExpression, SimpleExpression) 
+                             | leqConstraint(SimpleExpression, SimpleExpression)
+                             | geqConstraint(SimpleExpression, SimpleExpression) 
+                             | eqConstraint(SimpleExpression, SimpleExpression)
+                             | neqConstraint(SimpleExpression, SimpleExpression)
                              ;
 
 public data Parameter = varParameter(str var)

@@ -13,7 +13,7 @@ str prettyPrint(Spec spec) =
 '<ppEventOrder(spec.eventOrder)>
 '<ppConstraintClause(spec.constraintClause.constraints)>
 '<ppRequireClause(spec.requireClause)>
-'<ppEnsureClause(spec.ensureClause.predicates)>
+'<ppEnsureClause(spec.ensureClause)>
 ";
 
 str ppObjectClause(list[ObjectDecl] os) = 
@@ -129,8 +129,8 @@ str ppValues(list[Literal] values) {
 str ppRequireClause([]) = ""; 
 str ppRequireClause([req]) = 
 "REQUIRES
-' <for (p <- req.predicates){> 
-'    <ppPredicate(p)>
+' <for (p <- req.constraints){> 
+'    <ppConstraint(p)>
 ' <}>
 "; 
 

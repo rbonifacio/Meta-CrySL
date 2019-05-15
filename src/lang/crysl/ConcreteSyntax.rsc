@@ -66,16 +66,12 @@ syntax ConstraintClauseDef
 syntax ConstraintDef 
   = inSetConstraint: SimpleExpressionDef "in" LiteralSetDef
   | predicate: "!"? Id "[" {SimpleExpressionDef ","}+"]" ("after" Id)?
+  | noCallTo: "noCallTo" "(" Id ")"
+  | callTo: "callTo" "(" Id ")"
+  | simpleExpression: SimpleExpressionDef
   | left andConstraint: ConstraintDef "&&" ConstraintDef
   | left orConstraint: ConstraintDef "||" ConstraintDef 
-  >
-  | left impliesConstraint: ConstraintDef "=\>" ConstraintDef 
-  > left ltConstraint: SimpleExpressionDef "\<" SimpleExpressionDef
-  | left gtConstraint: SimpleExpressionDef "\>" SimpleExpressionDef
-  | left leqConstraint: SimpleExpressionDef "\<=" SimpleExpressionDef
-  | left geqConstraint: SimpleExpressionDef "\>=" SimpleExpressionDef
-  | left eqConstraint: SimpleExpressionDef "==" SimpleExpressionDef
-  | left neqConstraint: SimpleExpressionDef "!=" SimpleExpressionDef
+  > left impliesConstraint: ConstraintDef "=\>" ConstraintDef
   ; 
   
 syntax UtilityFunction = partFunction : "part" "(" Natural "," String "," Id ")" ;
@@ -84,6 +80,14 @@ syntax SimpleExpressionDef = wildcardParameter: "_"
                            > expNatural : Natural
                            | expVar : Id
                            | functionCall: Id "(" {ParameterDef ","}* ")"
+                           > left addConstraint: SimpleExpressionDef "+" SimpleExpressionDef
+                           | left subConstraint: SimpleExpressionDef "-" SimpleExpressionDef 
+                           > left ltConstraint: SimpleExpressionDef "\<" SimpleExpressionDef
+                           | left gtConstraint: SimpleExpressionDef "\>" SimpleExpressionDef
+                           | left leqConstraint: SimpleExpressionDef "\<=" SimpleExpressionDef
+                           | left geqConstraint: SimpleExpressionDef "\>=" SimpleExpressionDef
+                           | left eqConstraint: SimpleExpressionDef "==" SimpleExpressionDef
+                           | left neqConstraint: SimpleExpressionDef "!=" SimpleExpressionDef
                            ;   
                            
 syntax ParameterDef =  varParameter : Id
@@ -106,5 +110,5 @@ syntax EnsureClauseDef
 keyword Keyword 
   = "SPEC" | "OBJECTS" | "EVENTS" | "ORDER" 
   | "CONSTRAINTS" | "ENSURES" | "after" 
-  | "CONFIG"  ;
+  | "CONFIG" | "noCallTo" | "callTo" ;
 
