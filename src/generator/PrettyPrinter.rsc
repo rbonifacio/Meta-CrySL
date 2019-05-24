@@ -93,7 +93,7 @@ str ppConstraintClause(list[Constraint] cs) =
 str ppConstraint(Constraint c) { 
 	switch(c) {
 		case inSetConstraint(name, vs) : return "<name> in <ppLiteralSet(vs)>";
-		case predicate(negation, pred, objects, event) : return ppPredicate(predicate(negation, pred, objects, event));
+		case predicate(negation, pred, objects, evt) : return ppPredicate(predicate(negation, pred, objects, evt));
 		case noCallTo(str label) : return "noCallTo(<label>)";
 		case callTo(str label) : "callTo(<label>)";
 		case andConstraint(Constraint lhs, Constraint rhs): return "<ppConstraint(lhs)> && <ppConstraint(rhs)>"; 
@@ -108,7 +108,7 @@ str ppSimpleExpression(SimpleExpression c) {
 	switch(c) {
 		case expNatural(n) : return "<n>";
 		case expVar(v) : return "<v>"; 
-		case functionCall(functionName, pmts) : return "<functionName>(<ppValues(pmts)>)";
+		case functionCall(functionName, pmts) : return "<functionName>(<ppParameters(pmts)>)";
 		case wildcardParameter() : return "_"; 
 		case addConstraint(lhs, rhs) : return "<ppSimpleExpression(lhs)> + <ppSimpleExpression(rhs)>";  
  		case subExpression(lhs, rhs) : return "<ppSimpleExpression(lhs)> - <ppSimpleExpression(rhs)>"; 
@@ -124,11 +124,11 @@ str ppSimpleExpression(SimpleExpression c) {
 str ppLiteralSet(LiteralSet s) {
 	switch(s) {
 		case literalSet(values) : return "{<ppValues([v | v <- values])>}"; 
-		case metaVariable(str varName): return "${varName}";
+		case metaVariable(str varName): return "${<varName>}";
 	}
 }
 
-str ppParameter(list[Parameter] pmts) { 
+str ppParameters(list[Parameter] pmts) { 
   switch(pmts) {
     case [] : return  ""; 
     case [v] : return ppParameter(v); 
@@ -150,26 +150,34 @@ str ppValues(list[Literal] values) {
  };
 }
 
-str ppRequireClause([]) = ""; 
-str ppRequireClause([req]) = 
-"REQUIRES
-' <for (p <- req.constraints){> 
-'    <ppConstraint(p)>
-' <}>
-"; 
+
+str ppRequireClause(list[RequireClause] req) {
+	switch(req) {
+		case []  : return ""; 
+		case [r] : return  "REQUIRES
+                           ' <for (p <- r.constraints){> 
+                           '    <ppConstraint(p)>
+                           ' <}>
+                           ";
+     }
+} 
 
 /**
  * We use a list of ensure clauses because it is 
  * optional. Either we get an empty list or we get 
  * a list with one element. 
  */
-str ppEnsureClause([]) = "";  
-str ppEnsureClause([ens]) = 
-"ENSURES
-' <for (p <- ens.constraints){>
-'   <ppConstraint(p)>
-' <}> 
-"; 
+str ppEnsureClause(list[EnsureClause] ens) {
+	switch(ens) {
+		case []  : return ""; 
+		case [e] : return  "ENSURES
+                           ' <for (p <- e.constraints){> 
+                           '    <ppConstraint(p)>
+                           ' <}>
+                           ";
+     }
+}
+
 
 str ppPredicate(predicate(false, n, objs, [])) = "<n>[<ppList(mapper(objs, ppSimpleExpression))>];";
 str ppPredicate(predicate(false, n, objs, [e])) = "<n>[<ppList(mapper(objs, ppSimpleExpression))>] after <e>;";
