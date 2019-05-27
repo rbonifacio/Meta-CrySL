@@ -78,7 +78,7 @@ public list[Refinement] mergeRefinements([r]) = [r];
 public list[Refinement] mergeRefinements([r1, r2, *rs]) = mergeR(r1, r2) + mergeRefinements(rs);
 
 
-private Refinement mergeR(Refinement l, Refinement r)  = refineSpec(l.name, l.baseSpec, l.actualSpecParameters, mergeRefinementElements(l.refinements, r.refinements));
+public Refinement mergeR(Refinement l, Refinement r)  = refineSpec(l.name, l.baseSpec, l.actualSpecParameters, mergeRefinementElements(l.refinements, r.refinements));
 
 private list[RefinementElement] mergeRefinementElements(list[RefinementElement] l, list[RefinementElement] r) {
 	list[RefinementElement] res = [];
