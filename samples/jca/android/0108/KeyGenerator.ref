@@ -1,0 +1,3 @@
+SPEC KeyGenerator REFINES javax.crypto.KeyGenerator {
+	define algorithm = {"AESWRAP", "DESedeWRAP", "HmacSHA224"};
+}
