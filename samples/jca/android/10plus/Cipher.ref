@@ -1,0 +1,11 @@
+SPEC Cipher REFINES javax.crypto.Cipher {
+    define algorithm = {"BLOWFISH", "ARC4"}
+	define aes_modes = {"GCM"};  
+	define rsa_paddings = {"OAEPwithSHA-1andMGF1Padding", "OAEPwithSHA-256andMGF1Padding"};
+	add constraint part(0, "/", transformation) in {"AES"} && part(1, "/", transformation) in {"GCM"} => part(2, "/", transformation) in {"NoPadding"};
+	add constraint part(0, "/", transformation) in {"BLOWFISH"} => part(1, "/", transformation) in {"CBC", "CFB", "CTR", "CTS", "ECB", "OFB"};
+	add constraint part(0, "/", transformation) in {"BLOWFISH"} && part(1, "/", transformation) in {"CBC"} => part(2, "/", transformation) in {"PKCS7Padding", "PKCS5Padding", "ISO10126Padding"};
+	add constraint part(0, "/", transformation) in {"BLOWFISH"} && part(1, "/", transformation) in {"CTR", "CFB", "OFB"} => part(2, "/", transformation) in {"NoPadding"};
+	add constraint part(0, "/", transformation) in {"ARC4"} => part(1, "/", transformation) in {"ECB"};
+	add constraint part(0, "/", transformation) in {"ARC4"} => part(2, "/", transformation) in {"NoPadding"};	
+}
