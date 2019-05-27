@@ -1,0 +1,3 @@
+SPEC Mac REFINES javax.crypto.Mac {
+	define algorithm = {"PBEwithHmacSHA224","PBEwithHmacSHA256", "PBEwithHmacSHA384", "PBEwithHmacSHA512"};
+}

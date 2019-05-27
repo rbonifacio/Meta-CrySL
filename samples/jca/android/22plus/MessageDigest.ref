@@ -1,0 +1,3 @@
+SPEC MessageDigest REFINES java.security.MessageDigest {
+	define algorithm = {"SHA-224"};
+}
