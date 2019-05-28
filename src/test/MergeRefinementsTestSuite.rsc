@@ -1,4 +1,4 @@
-module \test::MergeRefinements
+module \test::MergeRefinementsTestSuite
 
 import generator::Loader;
 import lang::common::ConcreteSyntax; 
