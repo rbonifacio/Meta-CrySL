@@ -86,16 +86,16 @@ str ppEventExp(EventExp e) {
 str ppConstraintClause(list[Constraint] cs) = 
 "CONSTRAINTS
 ' <for(c <- cs) {>  
-'    foo ppConstraint(c); 
+'    <ppConstraint(c)>; 
 ' <}>
 ";
  
 str ppConstraint(Constraint c) { 
 	switch(c) {
-		case inSetConstraint(name, vs) : return "<name> in <ppLiteralSet(vs)>";
+		case inSetConstraint(e, vs) : return "<ppSimpleExpression(e)> in <ppLiteralSet(vs)>";
 		case predicate(negation, pred, objects, evt) : return ppPredicate(predicate(negation, pred, objects, evt));
 		case noCallTo(str label) : return "noCallTo(<label>)";
-		case callTo(str label) : "callTo(<label>)";
+		case callTo(str label) : return "callTo(<label>)";
 		case andConstraint(Constraint lhs, Constraint rhs): return "<ppConstraint(lhs)> && <ppConstraint(rhs)>"; 
 		case orConstraint(Constraint lhs, Constraint rhs): return "<ppConstraint(lhs)> || <ppConstraint(rhs)>";  
 		case impliesConstraint(lhs, rhs) : return "<ppConstraint(lhs)> =\> <ppConstraint(rhs)>";
@@ -104,8 +104,8 @@ str ppConstraint(Constraint c) {
 	}	 
 }
 
-str ppSimpleExpression(SimpleExpression c) {
-	switch(c) {
+str ppSimpleExpression(SimpleExpression e) {
+	switch(e) {
 		case expNatural(n) : return "<n>";
 		case expVar(v) : return "<v>"; 
 		case functionCall(functionName, pmts) : return "<functionName>(<ppParameters(pmts)>)";
@@ -117,14 +117,15 @@ str ppSimpleExpression(SimpleExpression c) {
 		case leqConstraint(lhs, rhs) : return "<ppSimpleExpression(lhs)> \<= <ppSimpleExpression(rhs)>";
 		case geqConstraint(lhs, rhs) : return "<ppSimpleExpression(lhs)> \>= <ppSimpleExpression(rhs)>";
 		case eqConstraint(lhs, rhs) : return "<ppSimpleExpression(lhs)> == <ppSimpleExpression(rhs)>"; 
-        case eqConstraint(lhs, rhs) : return "<ppSimpleExpression(lhs)> != <ppSimpleExpression(rhs)>";
+        case neqConstraint(lhs, rhs) : return "<ppSimpleExpression(lhs)> != <ppSimpleExpression(rhs)>";
+        default: return "error"; 
 	}
 }
 
 str ppLiteralSet(LiteralSet s) {
 	switch(s) {
 		case literalSet(values) : return "{<ppValues([v | v <- values])>}"; 
-		case metaVariable(str varName): return "${<varName>}";
+		case metaVariableSet(varName): return "${<varName>}";
 	}
 }
 
