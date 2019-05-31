@@ -2,6 +2,7 @@
 observation
 -------------------------------
 - no algorithm constraints for KeyStoreBuilderParameters
+- SSLEngine: is it necessary to call setEnabledProtocols method
 
 -------------------------------
  compilation errors
