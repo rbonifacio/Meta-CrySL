@@ -1,0 +1,3 @@
+SPEC AlgorithmParameters REFINES java.security.AlgorithmParameters {
+	define algorithm = {"PSS"};
+}

@@ -22,11 +22,10 @@ private map[str, Spec] specifications = ();
 private map[str, Refinement] refinements = (); 
 
 public tuple[map[str, Spec], map[str, Refinement]] loadModules(Configuration config) {
-    for(LoadModule l <- config.modules) {
-		parseModule(config.src, l); 
-	};
-	
-	return <specifications, refinements>; 
+   for(LoadModule l <- config.modules) {
+      parseModule(config.src, l);
+   };
+   return <specifications, refinements>;
 }
 
 
