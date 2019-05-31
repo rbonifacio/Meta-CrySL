@@ -11,4 +11,5 @@ public data RefinementElement
   | defineLiteralSet(str varName, LiteralSet values)
   | defineQualifiedType(str varName, str qualifiedType)
   | addConstraint(Constraint ctr)
+  | addRequire(Constraint ctr)
   | addEvent(EventDecl evt);

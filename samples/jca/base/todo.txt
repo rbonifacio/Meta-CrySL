@@ -1,0 +1,38 @@
+-------------------------------
+observation
+-------------------------------
+- no algorithm constraints for KeyStoreBuilderParameters
+
+-------------------------------
+ compilation errors
+-------------------------------
+- DHParameterSpec
+
+
+-------------------------------
+rules without variability
+-------------------------------
+
+CertPathTrustManagerParameters
+CipherInputStream
+CipherOutputStream
+DHGenParameterSpect
+DigestInputStream
+DigestOutputStream
+DSAGenParameterSpec
+GCMParameterSpec
+HMACParameterSpec
+IvParameterSpec
+Key
+KeyManagerFactory (only supports the PKIX algorithm)
+KeyPair
+KeyStore
+PBEKeySpec
+PBEPrameterSpec
+PKIXBuilderParameters
+PKIXParameters
+RSAKeyGenParameterSpec
+SecretKey
+SecretKeySpec
+
+

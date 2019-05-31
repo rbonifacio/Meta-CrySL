@@ -10,6 +10,7 @@ syntax RefinementElementDef
    | defineLiteralSet: "define" Id "=" LiteralSetDef ";" 
    | defineQualifiedType: "define" Id "=" QualifiedType ";"
    | addConstraint: "add" "constraint" ConstraintDef ";" 
+   | addRequire: "add" "require" ConstraintDef ";" 
    | addEvent: "add" "event" EventDef; 
 
 keyword RefinementKeyword = "SPEC" | "REFINES";

@@ -1,0 +1,3 @@
+SPEC Signature REFINES java.security.Signature {
+	define algorithm = {"MD4withRSA", "MD5withRSA/ISO9796-2", "RSASSA-PSS", "SHA1withRSA/ISO9796-2"};
+}
