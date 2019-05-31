@@ -24,12 +24,11 @@ void main(loc configurationFile) {
 }
 
 void compileMetaCrysl(loc file) {
-		parseSpecification(file);
+   parseSpecification(file);
 }
 
 void export(Configuration c, map[str, Spec] specs) {
    for(k <- specs) {
-      //println(prettyPrint(specs[k]));
       println(k);
       str outputFile = c.out + "/" + toSimpleName(k) + ".cryptsl";
       loc p = |file:///| + outputFile ;

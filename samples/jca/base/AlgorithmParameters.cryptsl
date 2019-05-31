@@ -28,8 +28,6 @@ CONSTRAINTS
 	
 REQUIRES    
     preparedAlg[parAr];
-    // alg in {"AES", "Blowfish", "DESede"} => preparedIV[params];
-    // alg in {"DiffieHellman"} => preparedDH[params];
     
 ENSURES 
     preparedAlg[this, alg] after Inits;
