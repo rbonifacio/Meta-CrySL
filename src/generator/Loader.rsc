@@ -17,54 +17,47 @@ import lang::refinement::AbstractSyntax;
 import lang::refinement::Parser; 
 
 import generator::PreProcessor; 
+import generator::IOUtil;
 
 private map[str, Spec] specifications = (); 
 private map[str, Refinement] refinements = (); 
 
 public tuple[map[str, Spec], map[str, Refinement]] loadModules(Configuration config) {
+   list[loc] files = []; 
+   
    for(LoadModule l <- config.modules) {
-      parseModule(config.src, l);
+      files += listFiles(config.src, l); 
+   };
+   
+   for(loc file <- files) {
+      parseModule(file);
    };
    return <specifications, refinements>;
 }
 
 
-public void parseModule(str src, LoadModule l, bool verbose = true) {
-	fullPath = "";
-	switch(l) {
-		case loadSpec(specification) : {
-		    fullPath += src + "/" + specification + ".cryptsl";
-		    
-		    if(verbose) print("Loading file " + fullPath); 
-					    
-			location = |file:///| + fullPath; 
- 			s = parseSpecification(location);
- 			specifications += (s.name : s);
+public void parseModule(loc file) {
+    print("Loading file: " + file.path); 
+    
+	if(file.extension == "cryptsl") {
+		s = parseSpecification(file);
+ 		specifications += (s.name : s);
+ 		println("... ok"); 
+	} else if(file.extension == "ref") {
+		r = parseRefinement(file);
  			
- 			if(verbose) println(" ok"); 
-		}
-		case loadRefinement(refinement): { 
-			fullPath += src + "/" + refinement + ".ref";
-			
-			if(verbose) print("Loading file " + fullPath); 
-						
-			location = |file:///| + fullPath; 
- 			r = parseRefinement(location);
- 			
- 			//TODO: merge the refinements. not sure if this implementation is working.
- 			// we definitly should implement some additional verifications here. 
- 			// example: what happens when the two refinements have different 
- 			// refinement parameters? 
- 			if(r.name in refinements) {
- 				old = refinements[r.name];
- 				r = mergeR(old, r); 
- 			}
+ 		//TODO: merge the refinements. not sure if this implementation is working.
+ 		// we definitly should implement some additional verifications here. 
+ 		// example: what happens when the two refinements have different 
+ 		// refinement parameters? 
+ 		if(r.name in refinements) {
+ 			old = refinements[r.name];
+ 			r = mergeR(old, r); 
+ 		}
 	
-			refinements += (r.name : r);
- 	
- 			if(verbose) println(" ok"); 
-		}	
-	};
+		refinements += (r.name : r);
+		println("... ok"); 
+	}
 }
 
 
@@ -101,3 +94,25 @@ private list[RefinementElement] mergeRefinementElements(list[RefinementElement] 
 	return res;
 }
 
+
+list[loc] listFiles(str src, LoadModule l) {
+  str fullPath = ""; 
+  str name = ""; 
+  str ext = ""; 
+  
+  switch(l) {
+    case loadSpec(specification) : { ext = "cryptsl"; name = specification; } 
+    case loadRefinement(refinement): { ext = "ref"; name = refinement; }  
+  }
+
+  fullPath += src + "/" + name;
+  location = |file:///| + fullPath; 
+			
+  if(exists(location) && isDirectory(location)) {
+     return findAllFiles(location, ext); 
+  }
+  
+  fullPath += "." + ext; 
+  location = |file:///| + fullPath;
+  return [location];
+}

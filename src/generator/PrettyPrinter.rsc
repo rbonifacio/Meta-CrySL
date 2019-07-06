@@ -9,11 +9,13 @@ str prettyPrint(Spec spec) =
 "SPEC <spec.name>
 '  
 '<ppObjectClause(spec.objectClause.objectDecls)>
+'<ppForbiddenClause(spec.forbiddenClause)>
 '<ppEventClause(spec.eventClause.eventDecls)>
 '<ppEventOrder(spec.eventOrder)>
-'<ppConstraintClause(spec.constraintClause.constraints)>
+'<ppConstraintClause(spec.constraintClause)>
 '<ppRequireClause(spec.requireClause)>
 '<ppEnsureClause(spec.ensureClause)>
+'<ppNegateClause(spec.negateClause)>
 ";
 
 str ppObjectClause(list[ObjectDecl] os) = 
@@ -24,8 +26,30 @@ str ppObjectClause(list[ObjectDecl] os) =
 ";
 
 str ppObject(ObjectDecl obj)  {
-	if(obj.arr) return "<obj.qualifiedType>[] <obj.varName>;"; 
-	return "<obj.qualifiedType> <obj.varName>;"; 
+	str tp = ""; 
+	str arr = ""; 
+	
+	if(size(obj.typeParameter) > 0) tp = "\<<obj.typeParameter[0]>\>";
+	
+	if(obj.arr) arr = "[]";
+	 
+	return "<obj.qualifiedType><tp><arr> <obj.varName>;"; 
+}
+
+/**
+ * We use a list of ensure clauses because it is 
+ * optional. Either we get an empty list or we get 
+ * a list with one element. 
+ */
+str ppForbiddenClause(list[ForbiddenClause] f) {
+	switch(f) {
+		case []  : return ""; 
+		case [clause] : return  "FORBIDDEN:
+                           ' <for (m <- clause.methods){> 
+                           '    <ppForbiddenMethod(m)>
+                           ' <}>
+                           ";
+     }
 }
 
 str ppEventClause(list[EventDecl] es) = 
@@ -60,6 +84,18 @@ str ppMethodEvent(list[str] eventLabel, list[str] varName, Method methodDef) {
 	return res;
 } 
 
+str ppForbiddenMethod(forbiddenMethod(str n, list[FormalArgument] args, list[str] context)) {
+    str ctx = ""; 
+    if(size(context) > 0) ctx = "=\> " + context[0]; 
+    
+	return "<n>(<ppList([ppFormalArgument(a) | a <- args])>) <ctx>;"; 
+}
+
+str ppFormalArgument(formalArgument(str qualifiedType, bool arr)) {
+	if(arr) return "<qualifiedType>[]"; 
+	return qualifiedType; 
+}
+
 str ppMethod(method(n, args)) {
 	return "<n>(<ppList([ppArgument(arg) | arg <- args])>)"; 
 }
@@ -83,12 +119,16 @@ str ppEventExp(EventExp e) {
   }
 }
 
-str ppConstraintClause(list[Constraint] cs) = 
-"CONSTRAINTS
-' <for(c <- cs) {>  
-'    <ppConstraint(c)>; 
-' <}>
-";
+str ppConstraintClause(list[ConstraintClause] cc) {
+  switch(cc) { 
+    case [] : return ""; 
+    case [constraintClause(cs)] : return "CONSTRAINTS
+                                  ' <for(c <- cs) {>  
+                                  '    <ppConstraint(c)>; 
+                                  ' <}>
+                                  ";
+  }
+}
  
 str ppConstraint(Constraint c) { 
 	switch(c) {
@@ -96,6 +136,7 @@ str ppConstraint(Constraint c) {
 		case predicate(negation, pred, objects, evt) : return ppPredicate(predicate(negation, pred, objects, evt));
 		case noCallTo(str label) : return "noCallTo(<label>)";
 		case callTo(str label) : return "callTo(<label>)";
+		case neverTypeOf(str var, str qualifiedType) : return "neverTypeOf(<var>, <qualifiedType>);";
 		case andConstraint(Constraint lhs, Constraint rhs): return "<ppConstraint(lhs)> && <ppConstraint(rhs)>"; 
 		case orConstraint(Constraint lhs, Constraint rhs): return "<ppConstraint(lhs)> || <ppConstraint(rhs)>";  
 		case impliesConstraint(lhs, rhs) : return "<ppConstraint(lhs)> =\> <ppConstraint(rhs)>";
@@ -179,6 +220,22 @@ str ppEnsureClause(list[EnsureClause] ens) {
      }
 }
 
+
+/**
+ * We use a list of negate clauses because it is 
+ * optional. Either we get an empty list or we get 
+ * a list with one element. 
+ */
+str ppNegateClause(list[NegateClause] neg) {
+	switch(neg) {
+		case []  : return ""; 
+		case [n] : return  "NEGATES
+                           ' <for (p <- n.constraints){> 
+                           '    <ppConstraint(p)>
+                           ' <}>
+                           ";
+     }
+}
 
 str ppPredicate(predicate(false, n, objs, [])) = "<n>[<ppList(mapper(objs, ppSimpleExpression))>];";
 str ppPredicate(predicate(false, n, objs, [e])) = "<n>[<ppList(mapper(objs, ppSimpleExpression))>] after <e>;";

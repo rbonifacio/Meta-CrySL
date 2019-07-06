@@ -9,7 +9,7 @@ import lang::common::ConcreteSyntax;
 
 /* The start symbol SpecDef */ 
 start syntax SpecDef 
-  = spec: "abstract"? "SPEC" QualifiedType  ("\<" {Id ","}+ "\>")? ObjectClauseDef EventClauseDef EventOrderDef ConstraintClauseDef RequireClauseDef? EnsureClauseDef? ;
+  = spec: "abstract"? "SPEC" QualifiedType  ("\<" {Id ","}+ "\>")? ObjectClauseDef ForbiddenClauseDef? EventClauseDef EventOrderDef ConstraintClauseDef? RequireClauseDef? EnsureClauseDef? NegateClauseDef? ;
 
 
 /* Definitions for the object declaration section */ 
@@ -18,11 +18,22 @@ syntax ObjectClauseDef
   = objectClause: "OBJECTS" ObjectDef+; 
   
 syntax ObjectDef 
-  = objectDecl: QualifiedType ("[" "]")? Id ";"  
+  = objectDecl: QualifiedType ("\<" QualifiedType "\>")? ("[" "]")? Id ";"  
   | metaObjectDecl: MetaVariable ("[" "]")? Id ";" 
   | typeParameterObjectDecl: "\<" Id "\>" ("[" "]")? Id ";"
   ;
 
+/* Definitions for the forbidden section */ 
+
+syntax ForbiddenClauseDef 
+ = forbidden: "FORBIDDEN" ForbiddenMethodDef*;
+ 
+syntax ForbiddenMethodDef 
+ = forbiddenMethod: Id "(" {FormalArgumentDef ","}* ")" ("=\>" Id)?";" ; 
+
+syntax FormalArgumentDef
+ = formalArgument: QualifiedType ("[" "]")?; 
+ 
 /* Definitions for the event declaration section */ 
   
 syntax EventClauseDef 
@@ -68,6 +79,7 @@ syntax ConstraintDef
   | predicate: "!"? Id "[" {SimpleExpressionDef ","}+"]" ("after" Id)?
   | noCallTo: "noCallTo" "(" Id ")"
   | callTo: "callTo" "(" Id ")"
+  | neverTypeOf: "neverTypeOf" "(" Id "," QualifiedType ")"
   | simpleExpression: SimpleExpressionDef
   | left andConstraint: ConstraintDef "&&" ConstraintDef
   | left orConstraint: ConstraintDef "||" ConstraintDef 
@@ -106,9 +118,13 @@ syntax RequireClauseDef
 syntax EnsureClauseDef
   = ensureClause: "ENSURES" {ConstraintDef ";"}+ ";" ; 
 
+/* Definitions for the ensure declaration section */ 
+        
+syntax NegateClauseDef
+  = negateClause: "NEGATES" {ConstraintDef ";"}+ ";" ; 
 
 keyword Keyword 
-  = "SPEC" | "OBJECTS" | "EVENTS" | "ORDER" 
+  = "SPEC" | "OBJECTS" | "FORBIDDEN" | "EVENTS" | "ORDER" | "NEGATES"
   | "CONSTRAINTS" | "ENSURES" | "after" 
   | "CONFIG" | "noCallTo" | "callTo" ;
 
