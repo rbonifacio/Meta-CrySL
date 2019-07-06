@@ -1,6 +1,6 @@
 SPEC AlgorithmParameters REFINES java.security.AlgorithmParameters {
 	define algorithm = {"AES", "DESede", "DH", "DSADSA", "OAEP","PKCS12PBE"};
 	
-	add constraint alg in {"AES", "DESede"} => preparedIV[params];
-	add constraint alg in {"DiffieHellman"} => preparedDH[params];
+	add require alg in {"AES", "DESede"} => preparedIV[params];
+	add require alg in {"DiffieHellman"} => preparedDH[params];
 }
