@@ -1,0 +1,3 @@
+SPEC SSLContext REFINES javax.net.ssl.SSLContext {
+	define algorithm = {"TLS"};
+}

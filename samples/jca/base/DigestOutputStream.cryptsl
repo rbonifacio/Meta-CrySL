@@ -8,7 +8,7 @@ OBJECTS
 	int b;
 
 FORBIDDEN
-	on(boolean) ;
+	on(java.lang.String);
 
 EVENTS
 	c: DigestOutputStream(os, md);

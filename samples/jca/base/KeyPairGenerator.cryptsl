@@ -29,13 +29,11 @@ CONSTRAINTS
     alg in {"DSA"} => keySize in {2048};
     alg in {"RSA"} => keySize in {2048, 4096};
     
-//	alg in {"EC"} => keySize in {256};
 
 REQUIRES
     alg in {"DH"} => preparedDH[params];
     alg in {"DSA"} => preparedDSA[params];
     alg in {"RSA"} => preparedRSA[params];
-//    alg in {"EC"} => preparedEC[params]; //seems missing
     
 
 ENSURES

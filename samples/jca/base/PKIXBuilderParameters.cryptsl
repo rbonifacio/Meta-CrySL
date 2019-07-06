@@ -13,8 +13,7 @@ ORDER
 	c1 | c2
 	
 REQUIRES
-	generatedKeyStore[keyStore];
-	//generatedTrustAnchor[];							
+	generatedKeyStore[keyStore];						
 	
 ENSURES
 	generatedCertPathParameters[this];
