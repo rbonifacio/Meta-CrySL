@@ -1,5 +1,5 @@
 SPEC Cipher REFINES javax.crypto.Cipher {
-    define algorithm = {"AES_128", "AES_256"}
+    define algorithm = {"AES_128", "AES_256"};
 	
 	add constraint part(0, "/", transformation) in {"AES_128", "AES_256"} => part(1, "/", transformation) in {"CBC", "ECB", "GCM"};
 	add constraint part(0, "/", transformation) in {"AES_128", "AES_256"} && part(1, "/", transformation) in {"CBC", "ECB"} => part(2, "/", transformation) in {"NoPadding", "PKCS5Padding"};

@@ -1,5 +1,5 @@
 SPEC Cipher REFINES javax.crypto.Cipher {
-    define algorithm = {"ChaCha20"}
+    define algorithm = {"ChaCha20"};
 	
 	add constraint part(0, "/", transformation) in {"ChaCha20"} => part(1, "/", transformation) in {"", "Poly1305"};
 	add constraint part(0, "/", transformation) in {"ChaCha20"} => part(2, "/", transformation) in {"NoPadding"};
