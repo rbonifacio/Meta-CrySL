@@ -1,3 +1,3 @@
 SPEC Mac REFINES javax.crypto.Mac {
-	define algorithm = {"DESMAC", "DESMAC/CFB8", "DESedeMAC", "DESedeMAC/CFB8", "DESedeMAC64", "DESwithISO9797", "HmacSHA224HmacSHA224", "ISO9797ALG3MAC"};
+	define algorithm = {"HmacMD5", "HmacSHA1", "HmacSHA256", "HmacSHA384", "HmacSHA512", "PBEwithHmacSHA", "PBEwithHmacSHA1"};
 }
