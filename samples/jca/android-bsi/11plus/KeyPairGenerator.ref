@@ -1,0 +1,6 @@
+SPEC KeyPairGenerator REFINES java.security.KeyPairGenerator {
+	define algorithm = {"EC"};
+	
+	add constraint alg in {"EC"} => keySize in {256};
+	add require alg in {"EC"} => preparedEC[params]; 
+}

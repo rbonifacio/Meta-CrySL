@@ -1,0 +1,3 @@
+SPEC Signature REFINES java.security.Signature {
+	define algorithm = {"DSA","SHA256withDSA", "SHA256withRSA", "SHA384withRSA", "SHA512withRSA"};
+}

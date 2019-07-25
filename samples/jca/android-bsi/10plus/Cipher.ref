@@ -1,0 +1,4 @@
+SPEC Cipher REFINES javax.crypto.Cipher {
+    define aes_modes = {"GCM"};  
+	add constraint part(0, "/", transformation) in {"AES"} && part(1, "/", transformation) in {"GCM"} => part(2, "/", transformation) in {"NoPadding"};
+}

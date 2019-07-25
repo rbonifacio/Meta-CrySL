@@ -1,0 +1,64 @@
+SPEC java.security.AlgorithmParameters
+  
+OBJECTS 
+   
+   java.lang.String alg; 
+   
+   java.security.spec.AlgorithmParameterSpec params; 
+   
+   byte[] parAr; 
+   
+   java.lang.String format; 
+   
+   byte[] parsRes; 
+ 
+
+
+EVENTS 
+   
+    g1: getInstance(alg); 
+   
+    g2: getInstance(alg, _); 
+   
+    Gets := g1 | g2; 
+   
+    i1: init(params); 
+   
+    i2: init(parAr); 
+   
+    i3: init(parAr, _); 
+   
+    Inits := i1 | i2 | i3; 
+   
+    e1: parsRes = getEncoded(); 
+   
+    e2: parsRes = getEncoded(format); 
+   
+    Encoded := e1 | e2; 
+ 
+
+ORDER
+  Gets, Inits, Encoded?
+
+CONSTRAINTS
+   
+    alg in {"DH", "PKCS12PBE", "PSS", "AES", "IES", "DSADSA", "OAEP"}; 
+ 
+                                  
+REQUIRES
+  
+    preparedAlg[parAr];
+  
+    alg in {"AES"} => preparedIV[params];
+  
+    alg in {"DiffieHellman"} => preparedDH[params];
+ 
+                           
+ENSURES
+  
+    preparedAlg[this, alg] after Inits;
+  
+    preparedAlg[parsRes, alg] after Encoded;
+ 
+                           
+

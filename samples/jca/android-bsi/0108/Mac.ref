@@ -1,0 +1,3 @@
+SPEC Mac REFINES javax.crypto.Mac {
+	define algorithm = {"HmacSHA224"};
+}

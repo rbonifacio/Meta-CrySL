@@ -1,0 +1,10 @@
+SPEC Cipher REFINES javax.crypto.Cipher {
+	define algorithm = {"AES","RSA"};
+	define aes_modes = {"CBC", "CTR"};
+	define rsa_paddings = {"NoPadding", "OAEPPadding"};
+	add constraint part(0, "/", transformation) in {"AES"} => part(1, "/", transformation) in ${aes_modes};
+	add constraint part(0, "/", transformation) in {"AES"} && part(1, "/", transformation) in {"CBC"} => part(2, "/", transformation) in {"ISO10126Padding"};
+	add constraint part(0, "/", transformation) in {"AES"} && part(1, "/", transformation) in {"CTR"} => part(2, "/", transformation) in {"NoPadding"};
+	add constraint part(0, "/", transformation) in {"RSA"} => part(1, "/", transformation) in {"", "ECB"};
+	add constraint part(0, "/", transformation) in {"RSA"} => part(2, "/", transformation) in ${rsa_paddings};
+}

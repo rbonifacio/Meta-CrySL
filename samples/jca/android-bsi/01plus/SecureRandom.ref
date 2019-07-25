@@ -1,0 +1,3 @@
+SPEC SecureRandom REFINES java.security.SecureRandom {
+	define algorithm = {"SHA1PRNG"}; 
+}

@@ -1,0 +1,3 @@
+SPEC Cipher REFINES javax.crypto.Cipher {
+   define rsa_paddings = {"OAEPwithSHA-224andMGF1Padding", "OAEPwithSHA-384andMGF1Padding", "OAEPwithSHA-512andMGF1Padding"};
+}

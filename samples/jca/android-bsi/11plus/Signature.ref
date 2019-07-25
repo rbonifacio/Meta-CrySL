@@ -1,0 +1,3 @@
+SPEC Signature REFINES java.security.Signature {
+	define algorithm = {"DSS"};
+}
