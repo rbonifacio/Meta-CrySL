@@ -1,0 +1,7 @@
+SPEC AlgorithmParameters REFINES java.security.AlgorithmParameters {
+	define algorithm = {"AES", "DESede", "DH", "DiffieHellman", "OAEP"};
+	
+	add require alg in {"AES", "DESede"} => preparedIV[params];
+	add require alg in {"DiffieHellman"} => preparedDH[params];
+	add require alg in {"DH"} => preparedDH[params];
+}

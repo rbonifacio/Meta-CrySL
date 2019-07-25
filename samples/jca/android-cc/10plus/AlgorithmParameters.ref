@@ -1,0 +1,5 @@
+SPEC AlgorithmParameters REFINES java.security.AlgorithmParameters {
+	define algorithm = {"BLOWFISH"};
+	
+	add constraint alg in {"BLOWFISH"} => preparedIV[params];
+}

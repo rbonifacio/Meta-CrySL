@@ -1,0 +1,4 @@
+SPEC Cipher REFINES javax.crypto.Cipher {
+    define aes_modes = {"GCM"};  
+	define rsa_paddings = {"OAEPwithSHA-256andMGF1Padding"};
+}
